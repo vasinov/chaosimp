@@ -1,0 +1,12 @@
+description: "This experiment stresses all CPUs for 60 seconds."
+targets:
+  - name: "ec2-instances"
+    resource_type: "aws:ec2:instance"
+    resource_tags:
+      - key: "imp"
+        value: "ec2-stress-cpus"
+    selection_mode: "ALL"
+actions:
+  - name: "stress-cpus"
+    type: "imp:run-script"
+    path: "scripts/stress-cpu.sh"
