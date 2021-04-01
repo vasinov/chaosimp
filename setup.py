@@ -10,6 +10,6 @@ setup(
     license="Apache 2.0",
     packages=find_packages(),
     include_package_data=True,
-    install_requires=["pyyaml", "click", "boto3", "troposphere"],
+    install_requires=["pyyaml", "click", "boto3", "troposphere", "pyhumps"],
     entry_points={"console_scripts": ["imp=imp.__main__:main"]}
 )
