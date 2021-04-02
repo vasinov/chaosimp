@@ -1,9 +1,8 @@
 import os
 import click
-from action_parsers.parser import *
 
 
-class ImpRunScriptParser(Parser):
+class ImpRunScriptParser:
     def __init__(self, name, shell_script_path):
         self.name = name
         self.shell_script_path = shell_script_path

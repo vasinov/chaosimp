@@ -26,8 +26,7 @@ class CloudFormation:
     def update(self, name, template):
         return self.cf_client.update_stack(
             StackName=name,
-            TemplateBody=template.to_json(),
-            DisableRollback=False
+            TemplateBody=template.to_json()
         )
 
     @handle_exception

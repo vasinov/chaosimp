@@ -1,6 +1,5 @@
-import click
 from clients.cloud_formation import *
-from imp_template import ImpTemplate
+from imp_template import *
 
 
 @click.group()
@@ -13,7 +12,7 @@ def templates(ctx):
 @click.pass_context
 @click.argument('name', type=click.STRING)
 def get(ctx, name):
-    click.echo(CloudFormation().get(ImpTemplate.template_name(name)))
+    click.echo(CloudFormation().get(template_name(name)))
 
 
 @templates.command()
@@ -30,7 +29,7 @@ def get(ctx, name):
 )
 @click.argument('name', type=click.STRING)
 def create(ctx, path, role_arn, name):
-    click.echo(ImpTemplate(path, name).process_template(role_arn, CloudFormation().create))
+    click.echo(ImpTemplate(path, name).process(role_arn, CloudFormation().create))
 
 
 @templates.command()
@@ -47,11 +46,11 @@ def create(ctx, path, role_arn, name):
 )
 @click.argument('name', type=click.STRING)
 def update(ctx, path, role_arn, name):
-    click.echo(ImpTemplate(path, name).process_template(role_arn, CloudFormation().update))
+    click.echo(ImpTemplate(path, name).process(role_arn, CloudFormation().update))
 
 
 @templates.command()
 @click.pass_context
 @click.argument('name', type=click.STRING)
 def delete(ctx, name):
-    click.echo(CloudFormation().delete(ImpTemplate.template_name(name)))
+    click.echo(CloudFormation().delete(template_name(name)))
