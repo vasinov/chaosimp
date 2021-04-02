@@ -1,7 +1,7 @@
 import humps
 import troposphere.ssm as ssm
 import troposphere.fis as fis
-from troposphere import GetAtt, Ref, Join, Sub
+from troposphere import Ref, Sub
 from constants import *
 
 
@@ -9,6 +9,7 @@ def build_ssm_document(name, ssm_content):
     doc = ssm.Document(__ssm_document_name(name))
 
     doc.DocumentType = "Command"
+    doc.Name = __ssm_document_name(name)
     doc.Content = ssm_content
 
     return doc
@@ -60,8 +61,7 @@ def build_fis_action(action, ssm_docs):
 
     if action["type"] == ACTION_TYPE_IMP_RUN_SCRIPT:
         ssm_doc_arn = Sub(
-            "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:document/${DocumentName}",
-            DocumentName=Ref(ssm_docs[action["name"]])
+            "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:document/" + __ssm_document_name(action["name"])
         )
 
         fis_action["ActionId"] = "aws:ssm:send-command"
