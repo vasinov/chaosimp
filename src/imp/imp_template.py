@@ -1,8 +1,8 @@
 import yaml
 from troposphere import Template
-
 from action_parsers.imp_run_script_parser import *
 from cf_resource_builder import *
+from constants import *
 
 
 def template_name(name):
@@ -21,23 +21,27 @@ class ImpTemplate:
 
     def process(self, role_arn, processor):
         try:
+            ssm_docs = {}
             cf_template = Template()
 
             for action in self.content['actions']:
-                if action['type'] == "imp:run-script":
+                if action['type'] == ACTION_TYPE_IMP_RUN_SCRIPT:
                     parser = ImpRunScriptParser(action["name"], action["path"])
-
-                    cf_template.add_resource(
-                        build_ssm_document(
-                            humps.pascalize(f"ssm-doc-{action['name']}"), parser.to_ssm_document(self.path)
-                        )
+                    ssm_document = build_ssm_document(
+                        action['name'], parser.to_ssm_document(self.path)
                     )
+
+                    cf_template.add_resource(ssm_document)
+
+                    ssm_docs[action["name"]] = ssm_document
 
             cf_template.add_resource(
                 build_fis_template(
-                    humps.pascalize(f"fis-template-{self.name}"),
+                    self.name,
                     role_arn,
-                    self.content["targets"]
+                    self.content["targets"],
+                    self.content["actions"],
+                    ssm_docs
                 )
             )
 

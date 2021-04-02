@@ -10,5 +10,5 @@ actions:
   - name: "stress-cpus"
     type: "imp:run-script"
     path: "scripts/stress-cpu.sh"
-    targets:
-      - "ec2-instances"
+    target: "ec2-instances"
+    duration: "PT1M"
