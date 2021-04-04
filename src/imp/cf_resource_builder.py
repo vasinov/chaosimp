@@ -1,15 +1,15 @@
-import humps
-import troposphere.ssm as ssm
 import troposphere.fis as fis
-from troposphere import Ref, Sub
+import troposphere.ssm as ssm
+from troposphere import Sub
 from constants import *
+from resource_names import *
 
 
 def build_ssm_document(name, ssm_content):
-    doc = ssm.Document(__ssm_document_name(name))
+    doc = ssm.Document(ssm_document_name(name))
 
     doc.DocumentType = "Command"
-    doc.Name = __ssm_document_name(name)
+    doc.Name = ssm_document_name(name)
     doc.Content = ssm_content
 
     return doc
@@ -17,8 +17,8 @@ def build_ssm_document(name, ssm_content):
 
 def build_fis_template(name, role_arn, targets, actions, ssm_docs):
     doc = fis.ExperimentTemplate(
-        __fis_template_name(name),
-        DependsOn=list(map(lambda d: __ssm_document_name(d), ssm_docs))
+        fis_template_name(name),
+        DependsOn=list(map(lambda d: ssm_document_name(d), ssm_docs))
     )
 
     # the API, at the very least, expects an empty stop condition
@@ -32,10 +32,10 @@ def build_fis_template(name, role_arn, targets, actions, ssm_docs):
     }
     doc.StopConditions = [none_stop_condition]
     doc.Tags = {
-        "Name": __fis_template_name(name)
+        "Name": fis_template_name(name)
     }
     doc.Targets = {
-        humps.pascalize(__fis_target_name(t['name'])): build_fis_target(t) for t in targets if "name" in t
+        humps.pascalize(fis_target_name(t['name'])): build_fis_target(t) for t in targets if "name" in t
     }
 
     return doc
@@ -63,15 +63,14 @@ def build_fis_action(action):
 
     if action["type"] == ACTION_TYPE_IMP_RUN_SCRIPT:
         ssm_doc_arn = Sub(
-            "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:document/" + __ssm_document_name(action["name"])
+            "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:document/" + ssm_document_name(action["name"])
         )
 
         fis_action["ActionId"] = "aws:ssm:send-command"
 
         fis_action["Targets"] = {
-            "Instances": __fis_target_name(action["target"])
+            "Instances": fis_target_name(action["target"])
         }
-
 
         fis_action["Parameters"] = {
             "documentArn": ssm_doc_arn,
@@ -79,15 +78,3 @@ def build_fis_action(action):
         }
 
     return fis_action
-
-
-def __ssm_document_name(name):
-    return humps.pascalize(f"imp-ssm-doc-{name}")
-
-
-def __fis_template_name(name):
-    return humps.pascalize(f"imp-fis-template-{name}")
-
-
-def __fis_target_name(name):
-    return humps.pascalize(f"imp-fis-target-{name}")

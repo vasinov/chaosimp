@@ -1,6 +1,7 @@
 import click
 import os
 from commands.templates import templates
+from commands.experiments import experiments
 
 
 @click.group()
@@ -19,4 +20,5 @@ def main(ctx, config):
 
 if __name__ == "__main__":
     main.add_command(templates)
+    main.add_command(experiments)
     main()
