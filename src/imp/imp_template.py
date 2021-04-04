@@ -21,7 +21,7 @@ class ImpTemplate:
 
     def process(self, role_arn, processor):
         try:
-            ssm_docs = {}
+            ssm_docs = []
             cf_template = Template()
 
             for action in self.content['actions']:
@@ -33,7 +33,7 @@ class ImpTemplate:
 
                     cf_template.add_resource(ssm_document)
 
-                    ssm_docs[action["name"]] = ssm_document
+                    ssm_docs.append(action["name"])
 
             cf_template.add_resource(
                 build_fis_template(
