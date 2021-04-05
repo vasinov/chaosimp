@@ -15,7 +15,7 @@ setup(
         "click",
         "boto3",
         "troposphere @ git+https://github.com/cloudtools/troposphere@master",  # until v2.7.1 is released
-        "pyhumps"
+        "pyhumps>=1.6.0"
     ],
     entry_points={"console_scripts": ["imp=imp.__main__:main"]}
 )

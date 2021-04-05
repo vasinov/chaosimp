@@ -8,29 +8,29 @@ class Fis:
         self.fis_client = boto3.client('fis')
 
     @handle_exception
-    def list(self, name):
+    def list(self, experiment_name):
         experiments = self.fis_client.list_experiments()["experiments"]
 
-        return list(e for e in experiments if e["tags"].get("Name") == name)
+        return list(e for e in experiments if e["tags"].get("Name") == experiment_name)
 
     @handle_exception
-    def get(self, id):
-        return self.fis_client.get_experiment(id=id)["experiment"]
+    def get(self, experiment_id):
+        return self.fis_client.get_experiment(id=experiment_id)["experiment"]
 
     @handle_exception
-    def start(self, template_name, name):
+    def start(self, template_name, experiment_name):
         templates = self.fis_client.list_experiment_templates()["experimentTemplates"]
         experiment_template = next(
-            (t for t in templates if t["tags"].get("Name") == fis_template_name(template_name)),
+            (t for t in templates if t["tags"].get("Name") == fis_template_name(template_name, False)),
             None
         )
 
         if experiment_template:
             return self.fis_client.start_experiment(
                 tags={
-                    "Name": name
+                    "Name": experiment_name
                 },
                 experimentTemplateId=experiment_template["id"]
-            )
+            )["experiment"]
         else:
             raise Exception("AWS FIS template not found.")

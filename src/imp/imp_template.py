@@ -5,10 +5,6 @@ from cf_resource_builder import *
 from constants import *
 
 
-def template_name(name):
-    return f"imp-{name}"
-
-
 class ImpTemplate:
     def __init__(self, path, name):
         self.path = path
@@ -28,6 +24,7 @@ class ImpTemplate:
                 if action['type'] == ACTION_TYPE_IMP_RUN_SCRIPT:
                     parser = ImpRunScriptParser(action["name"], action["path"])
                     ssm_document = build_ssm_document(
+                        self.name,
                         action['name'], parser.to_ssm_document(self.path)
                     )
 
@@ -45,6 +42,6 @@ class ImpTemplate:
                 )
             )
 
-            processor(template_name(self.name), cf_template)
+            processor(cf_template_name(self.name), cf_template)
         except yaml.YAMLError as e:
             click.secho(f'{type(e).__name__}: {e}', fg='red', err=True)

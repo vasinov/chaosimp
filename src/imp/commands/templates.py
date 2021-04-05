@@ -12,7 +12,7 @@ def templates(ctx):
 @click.pass_context
 @click.argument('name', type=click.STRING)
 def get(ctx, name):
-    click.echo(CloudFormation().get(template_name(name)))
+    click.echo(CloudFormation().get(cf_template_name(name)))
 
 
 @templates.command()
@@ -53,4 +53,4 @@ def update(ctx, path, role_arn, name):
 @click.pass_context
 @click.argument('name', type=click.STRING)
 def delete(ctx, name):
-    click.echo(CloudFormation().delete(template_name(name)))
+    click.echo(CloudFormation().delete(cf_template_name(name)))
