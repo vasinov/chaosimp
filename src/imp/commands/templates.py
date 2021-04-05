@@ -17,16 +17,8 @@ def get(ctx, name):
 
 @templates.command()
 @click.pass_context
-@click.option(
-    '--path', '-p',
-    type=click.Path(exists=True),
-    required=True
-)
-@click.option(
-    '--role-arn', '-r',
-    type=click.STRING,
-    required=True
-)
+@click.option('--path', '-p', type=click.Path(exists=True), required=True)
+@click.option('--role-arn', '-r', type=click.STRING, required=True)
 @click.argument('name', type=click.STRING)
 def create(ctx, path, role_arn, name):
     click.echo(ImpTemplate(path, name).process(role_arn, CloudFormation().create))
@@ -34,11 +26,7 @@ def create(ctx, path, role_arn, name):
 
 @templates.command()
 @click.pass_context
-@click.option(
-    '--path', '-p',
-    type=click.Path(exists=True),
-    required=True
-)
+@click.option('--path', '-p', type=click.Path(exists=True), required=True)
 @click.option(
     '--role-arn', '-r',
     type=click.STRING,
