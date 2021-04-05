@@ -13,7 +13,7 @@ def experiments(ctx):
 @click.pass_context
 @click.argument('template_name', type=click.STRING)
 def list(ctx, template_name):
-    for experiment in Fis().list(template_name):
+    for experiment in reversed(Fis().list(template_name)):
         experiment_output(experiment)
 
 
