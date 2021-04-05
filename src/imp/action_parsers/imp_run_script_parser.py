@@ -7,8 +7,14 @@ class ImpRunScriptParser:
         self.name = name
         self.shell_script_path = shell_script_path
 
-    def to_ssm_document(self, experiment_path):
+    def to_ssm_document(self, experiment_path, parameters):
         file_path = os.path.join(experiment_path, self.shell_script_path)
+        full_parameters = {
+            p["key"]: {
+                "description": "(Required) Auto-generated parameter for Imp CLI document.",
+                "type": "String"
+            } for p in parameters
+        }
 
         with open(click.format_filename(file_path), 'r') as stream:
             text = stream.read()
@@ -29,5 +35,6 @@ class ImpRunScriptParser:
                             ]
                         }
                     }
-                ]
+                ],
+                "parameters": full_parameters
             }

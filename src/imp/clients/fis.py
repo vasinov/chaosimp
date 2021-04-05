@@ -31,12 +31,12 @@ class Fis:
             None
         )
 
-        if experiment_template:
+        if experiment_template is None:
+            raise Exception("AWS FIS template not found.")
+        else:
             return self.fis_client.start_experiment(
                 tags={
                     "Name": experiment_name
                 },
                 experimentTemplateId=experiment_template["id"]
             )["experiment"]
-        else:
-            raise Exception("AWS FIS template not found.")

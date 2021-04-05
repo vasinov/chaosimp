@@ -11,4 +11,11 @@ actions:
     type: "imp:run-script"
     path: "scripts/stress-cpu.sh"
     target: "ec2-instances"
-    duration: "PT1M"
+    duration: "PT15M"
+    parameters:
+      - key: "InstallDependencies"
+        value: "True"
+      - key: "Duration"
+        value: "20"
+      - key: "CPU"
+        value: "0"

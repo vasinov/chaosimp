@@ -1,3 +1,4 @@
+import json
 import troposphere.fis as fis
 import troposphere.ssm as ssm
 from troposphere import Sub
@@ -76,6 +77,11 @@ def build_fis_action(template_name, action):
 
         fis_action["Parameters"] = {
             "documentArn": ssm_doc_arn,
+            "documentParameters": json.dumps(
+                {
+                    p["key"]: p["value"] for p in action["parameters"]
+                }
+            ),
             "duration": action["duration"]
         }
 

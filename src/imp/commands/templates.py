@@ -10,35 +10,31 @@ def templates(ctx):
 
 @templates.command()
 @click.pass_context
-@click.argument('name', type=click.STRING)
+@click.argument("name", type=click.STRING)
 def get(ctx, name):
     click.echo(CloudFormation().get(cf_template_name(name)))
 
 
 @templates.command()
 @click.pass_context
-@click.option('--path', '-p', type=click.Path(exists=True), required=True)
-@click.option('--role-arn', '-r', type=click.STRING, required=True)
-@click.argument('name', type=click.STRING)
+@click.option("--path", "-p", type=click.Path(exists=True), required=True)
+@click.option("--role-arn", "-r", type=click.STRING, required=True)
+@click.argument("name", type=click.STRING)
 def create(ctx, path, role_arn, name):
     click.echo(ImpTemplate(path, name).process(role_arn, CloudFormation().create))
 
 
 @templates.command()
 @click.pass_context
-@click.option('--path', '-p', type=click.Path(exists=True), required=True)
-@click.option(
-    '--role-arn', '-r',
-    type=click.STRING,
-    required=True
-)
-@click.argument('name', type=click.STRING)
+@click.option("--path", "-p", type=click.Path(exists=True), required=True)
+@click.option("--role-arn", "-r", type=click.STRING,  required=True)
+@click.argument("name", type=click.STRING)
 def update(ctx, path, role_arn, name):
     click.echo(ImpTemplate(path, name).process(role_arn, CloudFormation().update))
 
 
 @templates.command()
 @click.pass_context
-@click.argument('name', type=click.STRING)
+@click.argument("name", type=click.STRING)
 def delete(ctx, name):
     click.echo(CloudFormation().delete(cf_template_name(name)))
