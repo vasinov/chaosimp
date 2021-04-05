@@ -17,6 +17,13 @@ def list(ctx, name):
 
 @experiments.command()
 @click.pass_context
+@click.argument('id', type=click.STRING)
+def get(ctx, id):
+    click.echo(Fis().get(id))
+
+
+@experiments.command()
+@click.pass_context
 @click.option(
     '--template', '-t',
     type=click.STRING,

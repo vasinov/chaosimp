@@ -14,6 +14,10 @@ class Fis:
         return list(e for e in experiments if e["tags"].get("Name") == name)
 
     @handle_exception
+    def get(self, id):
+        return self.fis_client.get_experiment(id=id)["experiment"]
+
+    @handle_exception
     def start(self, template_name, name):
         templates = self.fis_client.list_experiment_templates()["experimentTemplates"]
         experiment_template = next(
