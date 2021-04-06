@@ -11,7 +11,7 @@ def experiments(ctx):
 
 @experiments.command()
 @click.pass_context
-@click.argument("template_name", type=click.STRING)
+@click.argument("template_name", type=click.STRING, required=False)
 def list(ctx, template_name):
     for experiment in reversed(Fis().list(template_name)):
         experiment_output(experiment)

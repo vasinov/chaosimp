@@ -1,4 +1,6 @@
 import boto3
+
+from constants import *
 from resource_names import *
 from decorators import handle_exception
 
@@ -11,7 +13,15 @@ class Fis:
     def list(self, experiment_name):
         experiments = self.fis_client.list_experiments()["experiments"]
 
-        return list(e for e in experiments if e["tags"].get("Name") == fis_experiment_name(experiment_name))
+        if experiment_name:
+            return list(
+                e for e in experiments
+                if e["tags"].get(IMP_TAG_KEY) and e["tags"].get(IMP_ORIGINAL_NAME_KEY) == experiment_name
+            )
+        else:
+            return list(
+                e for e in experiments if e["tags"].get(IMP_TAG_KEY)
+            )
 
     @handle_exception
     def get_by_id(self, experiment_id):
@@ -36,7 +46,9 @@ class Fis:
         else:
             return self.fis_client.start_experiment(
                 tags={
-                    "Name": fis_experiment_name(experiment_name)
+                    "Name": fis_experiment_name(experiment_name),
+                    IMP_TAG_KEY: "true",
+                    IMP_ORIGINAL_NAME_KEY: experiment_name
                 },
                 experimentTemplateId=experiment_template["id"]
             )["experiment"]

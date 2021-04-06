@@ -13,7 +13,7 @@ class CloudFormation:
 
         return [
             s for s in self.cf_client.describe_stacks()["Stacks"]
-            if any(t["Key"] == CF_IMP_TAG_KEY for t in s["Tags"])
+            if any(t["Key"] == IMP_TAG_KEY for t in s["Tags"])
         ]
 
     @handle_exception
@@ -30,11 +30,11 @@ class CloudFormation:
             DisableRollback=True,
             Tags=[
                 {
-                    "Key": CF_IMP_TAG_KEY,
+                    "Key": IMP_TAG_KEY,
                     "Value": "true"
                 },
                 {
-                    "Key": CF_IMP_ORIGINAL_NAME_KEY,
+                    "Key": IMP_ORIGINAL_NAME_KEY,
                     "Value": original_name
                 }
             ]

@@ -11,14 +11,14 @@ actions:
     type: "imp:run-script"
     path: "scripts/install.sh"
     target: "ec2-instances"
-    max_duration: "PT15M"
+    max_duration: "PT1M"
   - name: "stress-mem"
     start_after:
       - "install"
     type: "imp:run-script"
     path: "scripts/stress-memory.sh"
     target: "ec2-instances"
-    max_duration: "PT15M"
+    max_duration: "PT1M"
     parameters:
       - key: "Duration"
         value: "20"
