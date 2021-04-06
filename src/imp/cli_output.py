@@ -1,17 +1,32 @@
 import click
 
+from constants import *
+
+
+def template_output(template):
+    name = next((t["Value"] for t in template['Tags'] if t['Key'] == CF_IMP_ORIGINAL_NAME_KEY), {})
+
+    cli_info(f"Cloud Formation ID: {template['StackId']}")
+    cli_info(f"Name: {name}")
+    cli_info(f"Status: {template['StackStatus']}")
+    cli_info(f"Created at: {template['CreationTime']}")
+
 
 def experiment_output(experiment):
-    __info(f"ID: {experiment['id']}")
-    __info(f"Status: {experiment['state'].get('status')}")
-    __info(f"Reason: {experiment['state'].get('reason')}")
-    __info(f"Created at: {experiment['creationTime']}")
-    __info("")
+    cli_info(f"ID: {experiment['id']}")
+    cli_info(f"Status: {experiment['state'].get('status')}")
+    cli_info(f"Reason: {experiment['state'].get('reason')}")
+    cli_info(f"Created at: {experiment['creationTime']}")
+    cli_info("")
 
 
-def __info(text):
+def cli_info(text):
     click.echo(text)
 
 
-def __error(text):
+def cli_success(text):
+    click.secho(text, fg='green')
+
+
+def cli_error(text):
     click.secho(text, fg='red', err=True)

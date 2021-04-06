@@ -1,4 +1,4 @@
-import click
+from cli_output import cli_error
 
 
 def handle_exception(func):
@@ -6,5 +6,5 @@ def handle_exception(func):
         try:
             return func(*args, **kwargs)
         except Exception as e:
-            click.secho(f'{type(e).__name__}: {e}', fg='red', err=True)
+            cli_error(f'{type(e).__name__}: {e}')
     return wrapper

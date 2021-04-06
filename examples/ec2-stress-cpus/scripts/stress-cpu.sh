@@ -6,9 +6,9 @@
 if  [[ "{{ InstallDependencies }}" == True ]] ; then
   echo "Installing required dependencies"
 
-  if [[ "$( which stress-ng 2>/dev/null )" ]] ; then echo stress-ng is already installed. ; fi
-
-  if [ -f  "/etc/system-release" ] ; then
+  if [[ "$( which stress-ng 2>/dev/null )" ]] ; then
+    echo stress-ng is already installed.
+  elif [ -f  "/etc/system-release" ] ; then
     if cat /etc/system-release | grep -i 'Amazon Linux' ; then
       sudo amazon-linux-extras install testing
       sudo yum -y install stress-ng

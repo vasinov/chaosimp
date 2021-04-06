@@ -2,6 +2,7 @@ import yaml
 from troposphere import Template
 from action_parsers.imp_run_script_parser import *
 from cf_resource_builder import *
+from cli_output import cli_error
 from constants import *
 
 
@@ -42,6 +43,6 @@ class ImpTemplate:
                 )
             )
 
-            processor(cf_template_name(self.name), cf_template)
+            return processor(cf_template_name(self.name), self.name, cf_template)
         except yaml.YAMLError as e:
-            click.secho(f'{type(e).__name__}: {e}', fg='red', err=True)
+            cli_error(f'{type(e).__name__}: {e}')

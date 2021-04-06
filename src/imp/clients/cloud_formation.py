@@ -1,5 +1,5 @@
 import boto3
-
+from constants import *
 from decorators import handle_exception
 
 
@@ -9,21 +9,39 @@ class CloudFormation:
         self.cf_client = self.cf_resource.meta.client
 
     @handle_exception
+    def list(self):
+
+        return [
+            s for s in self.cf_client.describe_stacks()["Stacks"]
+            if any(t["Key"] == CF_IMP_TAG_KEY for t in s["Tags"])
+        ]
+
+    @handle_exception
     def get(self, name):
         return self.cf_client.describe_stacks(
             StackName=name
-        )
+        )["Stacks"][0]
 
     @handle_exception
-    def create(self, name, template):
+    def create(self, name, original_name, template):
         return self.cf_client.create_stack(
             StackName=name,
             TemplateBody=template.to_json(),
-            DisableRollback=True
+            DisableRollback=True,
+            Tags=[
+                {
+                    "Key": CF_IMP_TAG_KEY,
+                    "Value": "true"
+                },
+                {
+                    "Key": CF_IMP_ORIGINAL_NAME_KEY,
+                    "Value": original_name
+                }
+            ]
         )
 
     @handle_exception
-    def update(self, name, template):
+    def update(self, name, _, template):
         return self.cf_client.update_stack(
             StackName=name,
             TemplateBody=template.to_json()
