@@ -79,10 +79,12 @@ def build_fis_action(template_name, action):
             "documentArn": ssm_doc_arn,
             "documentParameters": json.dumps(
                 {
-                    p["key"]: p["value"] for p in action["parameters"]
+                    p["key"]: p["value"] for p in action.get("parameters", [])
                 }
             ),
             "duration": action["duration"]
         }
+
+        fis_action["StartAfter"] = list(map(lambda a: fis_action_name(a), action.get("start_after", [])))
 
     return fis_action

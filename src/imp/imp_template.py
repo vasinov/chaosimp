@@ -25,7 +25,7 @@ class ImpTemplate:
                     parser = ImpRunScriptParser(action["name"], action["path"])
                     ssm_document = build_ssm_document(
                         self.name,
-                        action['name'], parser.to_ssm_document(self.path, action["parameters"])
+                        action['name'], parser.to_ssm_document(self.path, action.get("parameters", []))
                     )
 
                     cf_template.add_resource(ssm_document)

@@ -1,10 +1,10 @@
-description: "This experiment stresses all CPUs for 60 seconds."
+description: "This experiment stresses a custom number of CPUs."
 targets:
   - name: "ec2-instances"
     resource_type: "aws:ec2:instance"
     resource_tags:
       - key: "imp"
-        value: "ec2-stress-cpus"
+        value: "ec2-experiment"
     selection_mode: "ALL"
 actions:
   - name: "stress-cpus"
