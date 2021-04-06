@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Original code by @adhorn
+# Based on the code by @adhorn
 # from https://github.com/adhorn/chaos-ssm-documents/blob/master/run-command/cpu-stress.yml
 
 if  [[ "{{ InstallDependencies }}" == True ]] ; then

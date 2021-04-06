@@ -29,8 +29,8 @@ def get(ctx, name):
 @click.option("--role-arn", "-r", type=click.STRING, required=True)
 @click.argument("name", type=click.STRING)
 def create(ctx, path, role_arn, name):
-    ImpTemplate(path, name).process(role_arn, CloudFormation().create)
     cli_success("Creating new template...")
+    ImpTemplate(path, name).process(role_arn, CloudFormation().create)
 
 
 @templates.command()
@@ -39,13 +39,13 @@ def create(ctx, path, role_arn, name):
 @click.option("--role-arn", "-r", type=click.STRING,  required=True)
 @click.argument("name", type=click.STRING)
 def update(ctx, path, role_arn, name):
-    ImpTemplate(path, name).process(role_arn, CloudFormation().update)
     cli_success("Updating template...")
+    ImpTemplate(path, name).process(role_arn, CloudFormation().update)
 
 
 @templates.command()
 @click.pass_context
 @click.argument("name", type=click.STRING)
 def delete(ctx, name):
-    click.echo(CloudFormation().delete(cf_template_name(name)))
     cli_success("Deleting template...")
+    CloudFormation().delete(cf_template_name(name))

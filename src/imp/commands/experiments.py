@@ -1,4 +1,4 @@
-from cli_output import experiment_output
+from cli_output import experiment_output, cli_success
 from clients.fis import *
 from imp_template import *
 
@@ -37,3 +37,11 @@ def get(ctx, name):
 @click.argument("name", type=click.STRING)
 def start(ctx, template, name):
     experiment_output(Fis().start(template, name))
+
+
+@experiments.command()
+@click.pass_context
+@click.argument("id", type=click.STRING)
+def stop(ctx, id):
+    cli_success("Stopping experiment...")
+    Fis().stop(id)

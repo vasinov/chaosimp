@@ -14,14 +14,14 @@ class ImpTemplate:
         file_path = os.path.join(path, 'imp.yml')
 
         with open(click.format_filename(file_path), 'r') as stream:
-            self.content = yaml.safe_load(stream)
+            self.data = yaml.safe_load(stream)
 
     def process(self, role_arn, processor):
         try:
             ssm_docs = []
             cf_template = Template()
 
-            for action in self.content['actions']:
+            for action in self.data['actions']:
                 if action['type'] == ACTION_TYPE_IMP_RUN_SCRIPT:
                     parser = ImpRunScriptParser(action["name"], action["path"])
                     ssm_document = build_ssm_document(
@@ -37,8 +37,7 @@ class ImpTemplate:
                 build_fis_template(
                     self.name,
                     role_arn,
-                    self.content["targets"],
-                    self.content["actions"],
+                    self.data,
                     ssm_docs
                 )
             )

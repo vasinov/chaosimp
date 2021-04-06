@@ -40,3 +40,9 @@ class Fis:
                 },
                 experimentTemplateId=experiment_template["id"]
             )["experiment"]
+
+    @handle_exception
+    def stop(self, experiment_id):
+        self.fis_client.stop_experiment(
+            id=experiment_id
+        )

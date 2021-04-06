@@ -11,14 +11,14 @@ actions:
     type: "imp:run-script"
     path: "scripts/disable-dns.sh"
     target: "ec2-instances"
-    duration: "PT10M"
+    max_duration: "PT10M"
+    parameters:
+      - key: "Duration"
+        value: "30"
   - name: "enable-dns"
     start_after:
       - "disable-dns"
     type: "imp:run-script"
     path: "scripts/enable-dns.sh"
     target: "ec2-instances"
-    duration: "PT10M"
-    parameters:
-      - key: "Duration"
-        value: "1"
+    max_duration: "PT10M"
