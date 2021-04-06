@@ -15,6 +15,7 @@ def list(ctx):
     for template in reversed(CloudFormation().list()):
         template_output(template)
 
+
 @templates.command()
 @click.pass_context
 @click.argument("name", type=click.STRING)
