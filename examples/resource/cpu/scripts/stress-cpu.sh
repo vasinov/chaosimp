@@ -31,6 +31,6 @@ pgrep stress-ng && echo Another stress-ng command is running, exiting... && exit
 
 echo Initiating CPU stress for {{ Duration }} seconds...
 
-stress-ng --cpu {{ CPU }} --cpu-method matrixprod -t {{ Duration }}s
+stress-ng --cpu 0 --cpu-method matrixprod --cpu-load {{ Load }} -t {{ Duration }}s
 
 echo Finished CPU stress.

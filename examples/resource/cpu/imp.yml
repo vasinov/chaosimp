@@ -17,5 +17,5 @@ actions:
         value: "True"
       - key: "Duration"
         value: "20"
-      - key: "CPU"
-        value: "0"
+      - key: "Load"
+        value: "50"
