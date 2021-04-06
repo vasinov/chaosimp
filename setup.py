@@ -14,6 +14,7 @@ setup(
         "pyyaml",
         "click",
         "boto3",
+        "cfn_flip",
         "troposphere @ git+https://github.com/cloudtools/troposphere@master",  # until v2.7.1 is released
         "pyhumps>=1.6.0"
     ],

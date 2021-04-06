@@ -10,6 +10,7 @@ def template_output(template):
     cli_info(f"Name: {name}")
     cli_info(f"Status: {template['StackStatus']}")
     cli_info(f"Created at: {template['CreationTime']}")
+    cli_info("")
 
 
 def experiment_output(experiment):

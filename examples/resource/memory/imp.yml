@@ -1,0 +1,26 @@
+description: "This experiment stresses a custom number of CPUs."
+targets:
+  - name: "ec2-instances"
+    resource_type: "aws:ec2:instance"
+    resource_tags:
+      - key: "imp"
+        value: "ec2-experiment"
+    selection_mode: "ALL"
+actions:
+  - name: "install"
+    type: "imp:run-script"
+    path: "scripts/install.sh"
+    target: "ec2-instances"
+    max_duration: "PT15M"
+  - name: "stress-mem"
+    start_after:
+      - "install"
+    type: "imp:run-script"
+    path: "scripts/stress-memory.sh"
+    target: "ec2-instances"
+    max_duration: "PT15M"
+    parameters:
+      - key: "Duration"
+        value: "20"
+      - key: "Percent"
+        value: "80"

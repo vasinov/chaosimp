@@ -11,7 +11,7 @@ class Fis:
     def list(self, experiment_name):
         experiments = self.fis_client.list_experiments()["experiments"]
 
-        return list(e for e in experiments if e["tags"].get("Name") == experiment_name)
+        return list(e for e in experiments if e["tags"].get("Name") == fis_experiment_name(experiment_name))
 
     @handle_exception
     def get_by_id(self, experiment_id):
@@ -21,7 +21,7 @@ class Fis:
     def get_latest_by_name(self, experiment_name):
         experiments = self.fis_client.list_experiments()["experiments"]
 
-        return list(e for e in experiments if e["tags"].get("Name") == experiment_name)[0]
+        return list(e for e in experiments if e["tags"].get("Name") == fis_experiment_name(experiment_name))[0]
 
     @handle_exception
     def start(self, template_name, experiment_name):
@@ -36,7 +36,7 @@ class Fis:
         else:
             return self.fis_client.start_experiment(
                 tags={
-                    "Name": experiment_name
+                    "Name": fis_experiment_name(experiment_name)
                 },
                 experimentTemplateId=experiment_template["id"]
             )["experiment"]
