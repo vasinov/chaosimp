@@ -1,0 +1,26 @@
+description: "This experiment stresses IO."
+targets:
+  - name: "ec2-instances"
+    resource_type: "aws:ec2:instance"
+    resource_tags:
+      - key: "imp"
+        value: "ec2-experiment"
+    selection_mode: "ALL"
+actions:
+  - name: "install"
+    type: "imp:run-script"
+    path: "../../install-stress-ng.sh"
+    target: "ec2-instances"
+    max_duration: "PT1M"
+  - name: "stress-disk"
+    start_after:
+      - "install"
+    type: "imp:run-script"
+    path: "stress-disk.sh"
+    target: "ec2-instances"
+    max_duration: "PT1M"
+    parameters:
+      - key: "Duration"
+        value: "20"
+      - key: "Filesize"
+        value: "10"
