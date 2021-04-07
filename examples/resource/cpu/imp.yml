@@ -20,8 +20,6 @@ actions:
     target: "ec2-instances"
     max_duration: "PT1M"
     parameters:
-      - key: "InstallDependencies"
-        value: "True"
       - key: "Duration"
         value: "20"
       - key: "Load"

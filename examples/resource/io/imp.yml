@@ -1,4 +1,4 @@
-description: "This experiment stresses % of memory"
+description: "This experiment stresses IO."
 targets:
   - name: "ec2-instances"
     resource_type: "aws:ec2:instance"
@@ -12,11 +12,11 @@ actions:
     path: "../../install-stress-ng.sh"
     target: "ec2-instances"
     max_duration: "PT1M"
-  - name: "stress-mem"
+  - name: "stress-io"
     start_after:
       - "install"
     type: "imp:run-script"
-    path: "stress-memory.sh"
+    path: "stress-io.sh"
     target: "ec2-instances"
     max_duration: "PT1M"
     parameters:
