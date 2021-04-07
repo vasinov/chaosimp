@@ -1,5 +1,6 @@
 from cli_output import template_output, cli_success
 from clients.cloud_formation import *
+from config_manager import ConfigManager, TEMPLATE_ROLE_ARN_KEY
 from imp_template import *
 
 
@@ -26,17 +27,19 @@ def get(ctx, name):
 @templates.command()
 @click.pass_context
 @click.option("--path", "-p", type=click.Path(exists=True), required=True)
-@click.option("--role-arn", "-r", type=click.STRING, required=True)
+@click.option("--role-arn", "-r", type=click.STRING, required=not ConfigManager().get(TEMPLATE_ROLE_ARN_KEY))
 @click.argument("name", type=click.STRING)
 def create(ctx, path, role_arn, name):
     cli_success("Creating new template...")
+    role_arn = role_arn or ConfigManager().get(TEMPLATE_ROLE_ARN_KEY)
+
     ImpTemplate(path, name).process(role_arn, CloudFormation().create)
 
 
 @templates.command()
 @click.pass_context
 @click.option("--path", "-p", type=click.Path(exists=True), required=True)
-@click.option("--role-arn", "-r", type=click.STRING,  required=True)
+@click.option("--role-arn", "-r", type=click.STRING,  required=False)
 @click.argument("name", type=click.STRING)
 def update(ctx, path, role_arn, name):
     cli_success("Updating template...")

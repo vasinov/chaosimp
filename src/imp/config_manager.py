@@ -3,7 +3,8 @@ import os
 
 from decorators import handle_exception
 
-SUPPORTED_KEYS = ["TemplateRoleArn"]
+TEMPLATE_ROLE_ARN_KEY = "TemplateRoleArn"
+SUPPORTED_KEYS = [TEMPLATE_ROLE_ARN_KEY]
 CONFIG_FILE_PATH = "~/.imp.json"
 
 
