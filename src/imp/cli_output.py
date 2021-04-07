@@ -32,5 +32,9 @@ def cli_success(text):
     click.secho(text, fg='green')
 
 
+def cli_warn(text):
+    click.secho(text, fg='yellow')
+
+
 def cli_error(text):
     click.secho(text, fg='red', err=True)

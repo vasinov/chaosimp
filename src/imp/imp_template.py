@@ -13,7 +13,7 @@ class ImpTemplate:
 
         file_path = os.path.join(path, 'imp.yml')
 
-        with open(click.format_filename(file_path), 'r') as stream:
+        with open(file_path, 'r') as stream:
             self.data = yaml.safe_load(stream)
 
     def process(self, role_arn, processor):

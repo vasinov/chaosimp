@@ -1,5 +1,6 @@
 import click
 import os
+from commands.config import config
 from commands.templates import templates
 from commands.experiments import experiments
 
@@ -19,6 +20,7 @@ def main(ctx, config):
 
 
 if __name__ == "__main__":
+    main.add_command(config)
     main.add_command(templates)
     main.add_command(experiments)
     main()
