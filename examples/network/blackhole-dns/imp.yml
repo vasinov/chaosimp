@@ -9,7 +9,7 @@ targets:
 actions:
   - name: "disable-dns"
     type: "imp:run-script"
-    path: "scripts/disable-dns.sh"
+    path: "disable-dns.sh"
     target: "ec2-instances"
     max_duration: "PT1M"
     parameters:
@@ -19,6 +19,6 @@ actions:
     start_after:
       - "disable-dns"
     type: "imp:run-script"
-    path: "scripts/enable-dns.sh"
+    path: "enable-dns.sh"
     target: "ec2-instances"
     max_duration: "PT1M"

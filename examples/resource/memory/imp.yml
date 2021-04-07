@@ -9,14 +9,14 @@ targets:
 actions:
   - name: "install"
     type: "imp:run-script"
-    path: "scripts/install.sh"
+    path: "../../install-stress-ng.sh"
     target: "ec2-instances"
     max_duration: "PT1M"
   - name: "stress-mem"
     start_after:
       - "install"
     type: "imp:run-script"
-    path: "scripts/stress-memory.sh"
+    path: "stress-memory.sh"
     target: "ec2-instances"
     max_duration: "PT1M"
     parameters:

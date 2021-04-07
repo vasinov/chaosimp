@@ -7,9 +7,16 @@ targets:
         value: "ec2-experiment"
     selection_mode: "ALL"
 actions:
-  - name: "stress-cpus"
+  - name: "install"
     type: "imp:run-script"
-    path: "scripts/stress-cpu.sh"
+    path: "../../install-stress-ng.sh"
+    target: "ec2-instances"
+    max_duration: "PT1M"
+  - name: "stress-cpus"
+    start_after:
+      - "install"
+    type: "imp:run-script"
+    path: "stress-cpu.sh"
     target: "ec2-instances"
     max_duration: "PT1M"
     parameters:
