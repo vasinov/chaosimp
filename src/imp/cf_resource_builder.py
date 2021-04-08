@@ -69,53 +69,33 @@ def build_fis_target(target: dict) -> dict:
     return target
 
 
-def build_fis_action(template_name: str, action: dict) -> Optional[dict]:
+def build_fis_action(template_name: str, action: dict) -> dict:
+    fis_action: Dict[str, Any] = {
+        "Parameters": {humps.camelize(k): v for k, v in action.get("Parameters", {}).items()},
+        "Targets": {
+            "Instances": fis_target_name(template_name, action["Target"])
+        },
+        "StartAfter": list(map(lambda a: fis_action_name(a), action.get("StartAfter", [])))
+    }
+
     if action["Type"] == ACTION_TYPE_IMP_RUN_SCRIPT:
-        return __imp_run_script(template_name, action)
-    elif action["Type"] == ACTION_TYPE_AWS_FIS_INJECT_API_INTERNAL_ERROR:
-        return __aws_fis_inject_internal_error(template_name, action)
+        fis_action["ActionId"] = "aws:ssm:send-command"
+
+        ssm_doc_arn = Sub(
+            "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:document/"
+            + ssm_document_name(template_name, action.get("Name"), False)
+        )
+
+        fis_action["Parameters"]["documentArn"] = ssm_doc_arn
+
+        fis_action["Parameters"]["documentParameters"] = json.dumps(
+            {
+                p["Key"]: p["Value"] for p in action.get("Document", {}).get("Parameters", [])
+            }
+        )
+
+        return fis_action
     else:
-        return None
+        fis_action["ActionId"] = action["Type"]
 
-
-def __imp_run_script(template_name: str, action: dict) -> dict:
-    fis_action: Dict[str, Any] = {}
-
-    ssm_doc_arn = Sub(
-        "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:document/"
-        + ssm_document_name(template_name, action.get("Name"), False)
-    )
-
-    fis_action["ActionId"] = "aws:ssm:send-command"
-
-    fis_action["Targets"] = {
-        "Instances": fis_target_name(template_name, action["Target"])
-    }
-
-    fis_action["Parameters"] = {humps.camelize(k): v for k, v in action.get("Parameters", {}).items()}
-
-    fis_action["Parameters"]["documentArn"] = ssm_doc_arn
-
-    fis_action["Parameters"]["documentParameters"] = json.dumps(
-        {
-            p["Key"]: p["Value"] for p in action.get("Document", {}).get("Parameters", [])
-        }
-    )
-
-    fis_action["StartAfter"] = list(map(lambda a: fis_action_name(a), action.get("StartAfter", [])))
-
-    return fis_action
-
-
-def __aws_fis_inject_internal_error(template_name: str, action: dict) -> dict:
-    fis_action = {}
-
-    fis_action["ActionId"] = ACTION_TYPE_AWS_FIS_INJECT_API_INTERNAL_ERROR
-
-    fis_action["Targets"] = {
-        "Instances": fis_target_name(template_name, action["Target"])
-    }
-
-    fis_action["Parameters"] = {humps.camelize(k): v for k, v in action.get("Parameters", {}).items()}
-
-    return fis_action
+        return fis_action
