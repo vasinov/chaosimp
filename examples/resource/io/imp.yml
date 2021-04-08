@@ -6,21 +6,25 @@ Targets:
       - Key: "imp"
         Value: "ec2-experiment"
     SelectionMode: "ALL"
-actions:
-  - name: "install"
-    type: "imp:run-script"
-    path: "../../install-stress-ng.sh"
-    target: "ec2-instances"
-    duration: "PT1M"
-  - name: "stress-io"
-    start_after:
+Actions:
+  - Name: "install"
+    Type: "imp:run-script"
+    Target: "ec2-instances"
+    Document:
+      Path: "../../install-stress-ng.sh"
+    Parameters:
+      Duration: "PT1M"
+  - Name: "stress-io"
+    StartAfter:
       - "install"
-    type: "imp:run-script"
-    path: "stress-io.sh"
-    target: "ec2-instances"
-    duration: "PT1M"
-    parameters:
-      - key: "Duration"
-        value: "20"
-      - key: "Percent"
-        value: "80"
+    Type: "imp:run-script"
+    Target: "ec2-instances"
+    Parameters:
+      Duration: "PT1M"
+    Document:
+      Path: "stress-io.sh"
+      Parameters:
+        - Key: "Duration"
+          Value: "20"
+        - Key: "Percent"
+          Value: "80"

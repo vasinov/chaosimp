@@ -2,14 +2,15 @@ import os
 
 
 class ImpRunScriptParser:
-    def __init__(self, name, shell_script_path):
+    def __init__(self, name: str, shell_script_path: str):
         self.name = name
         self.shell_script_path = shell_script_path
 
-    def to_ssm_document(self, experiment_path, parameters):
+    def to_ssm_document(self, experiment_path: str, parameters: dict) -> dict:
         file_path = os.path.join(experiment_path, self.shell_script_path)
+
         full_parameters = {
-            p["key"]: {
+            p["Key"]: {
                 "description": "(Required) Auto-generated parameter for Imp CLI document.",
                 "type": "String"
             } for p in parameters

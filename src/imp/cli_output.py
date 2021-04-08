@@ -3,7 +3,7 @@ import click
 from constants import *
 
 
-def template_output(template):
+def template_output(template: dict) -> None:
     if template:
         name = next((t["Value"] for t in template['Tags'] if t['Key'] == IMP_ORIGINAL_NAME_KEY), {})
 
@@ -14,7 +14,7 @@ def template_output(template):
         cli_info("")
 
 
-def experiment_output(experiment):
+def experiment_output(experiment: dict) -> None:
     if experiment:
         cli_info(f"ID: {experiment['id']}")
         cli_info(f"Name: {experiment['tags'].get(IMP_ORIGINAL_NAME_KEY, '')}")
@@ -24,17 +24,17 @@ def experiment_output(experiment):
         cli_info("")
 
 
-def cli_info(text):
+def cli_info(text: str) -> None:
     click.echo(text)
 
 
-def cli_success(text):
+def cli_success(text: str) -> None:
     click.secho(text, fg='green')
 
 
-def cli_warn(text):
+def cli_warn(text: str) -> None:
     click.secho(text, fg='yellow')
 
 
-def cli_error(text):
+def cli_error(text: str) -> None:
     click.secho(text, fg='red', err=True)

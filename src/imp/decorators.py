@@ -1,7 +1,9 @@
+from types import LambdaType
+
 from cli_output import cli_error
 
 
-def handle_exception(func):
+def handle_exception(func: LambdaType):
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)

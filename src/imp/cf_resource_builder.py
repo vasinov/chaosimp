@@ -1,4 +1,6 @@
 import json
+from typing import Optional, Dict, Any
+
 import troposphere.fis as fis
 import troposphere.ssm as ssm
 from troposphere import Sub
@@ -6,7 +8,7 @@ from constants import *
 from resource_names import *
 
 
-def build_ssm_document(template_name, name, ssm_content):
+def build_ssm_document(template_name: str, name: str, ssm_content: dict):
     doc = ssm.Document(ssm_document_name(template_name, name, True))
 
     doc.DocumentType = "Command"
@@ -16,9 +18,9 @@ def build_ssm_document(template_name, name, ssm_content):
     return doc
 
 
-def build_fis_template(template_name, role_arn, data, ssm_docs):
+def build_fis_template(template_name: str, role_arn: str, data: dict, ssm_docs: list) -> fis.ExperimentTemplate:
     targets = data.get("Targets", [])
-    actions = data.get("actions", [])
+    actions = data.get("Actions", [])
     stop_conditions = data.get("StopConditions", [])
 
     doc = fis.ExperimentTemplate(
@@ -38,11 +40,11 @@ def build_fis_template(template_name, role_arn, data, ssm_docs):
     doc.RoleArn = role_arn
 
     doc.Targets = {
-        fis_target_name(template_name, t["Name"]): build_fis_target(t) for t in targets
+        fis_target_name(template_name, t.get("Name")): build_fis_target(t) for t in targets
     }
 
     doc.Actions = {
-        fis_action_name(a["name"]): build_fis_action(template_name, a) for a in actions
+        fis_action_name(a.get("Name")): build_fis_action(template_name, a) for a in actions
     }
 
     doc.StopConditions = stop_conditions
@@ -54,8 +56,7 @@ def build_fis_template(template_name, role_arn, data, ssm_docs):
     return doc
 
 
-def build_fis_target(target):
-
+def build_fis_target(target: dict) -> dict:
     if "ResourceTags" in target:
         tags = target["ResourceTags"]
 
@@ -68,57 +69,53 @@ def build_fis_target(target):
     return target
 
 
-def build_fis_action(template_name, action):
-    if action["type"] == ACTION_TYPE_IMP_RUN_SCRIPT:
+def build_fis_action(template_name: str, action: dict) -> Optional[dict]:
+    if action["Type"] == ACTION_TYPE_IMP_RUN_SCRIPT:
         return __imp_run_script(template_name, action)
-    elif action["type"] == ACTION_TYPE_AWS_FIS_INJECT_API_INTERNAL_ERROR:
+    elif action["Type"] == ACTION_TYPE_AWS_FIS_INJECT_API_INTERNAL_ERROR:
         return __aws_fis_inject_internal_error(template_name, action)
     else:
         return None
 
 
-def __imp_run_script(template_name, action):
-    fis_action = {}
+def __imp_run_script(template_name: str, action: dict) -> dict:
+    fis_action: Dict[str, Any] = {}
 
     ssm_doc_arn = Sub(
         "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:document/"
-        + ssm_document_name(template_name, action["name"], False)
+        + ssm_document_name(template_name, action.get("Name"), False)
     )
 
     fis_action["ActionId"] = "aws:ssm:send-command"
 
     fis_action["Targets"] = {
-        "Instances": fis_target_name(template_name, action["target"])
+        "Instances": fis_target_name(template_name, action["Target"])
     }
 
-    fis_action["Parameters"] = {
-        "documentArn": ssm_doc_arn,
-        "documentParameters": json.dumps(
-            {
-                p["key"]: p["value"] for p in action.get("parameters", [])
-            }
-        ),
-        "duration": action["duration"]
-    }
+    fis_action["Parameters"] = {humps.camelize(k): v for k, v in action.get("Parameters", {}).items()}
 
-    fis_action["StartAfter"] = list(map(lambda a: fis_action_name(a), action.get("start_after", [])))
+    fis_action["Parameters"]["documentArn"] = ssm_doc_arn
+
+    fis_action["Parameters"]["documentParameters"] = json.dumps(
+        {
+            p["Key"]: p["Value"] for p in action.get("Document", {}).get("Parameters", [])
+        }
+    )
+
+    fis_action["StartAfter"] = list(map(lambda a: fis_action_name(a), action.get("StartAfter", [])))
 
     return fis_action
 
 
-def __aws_fis_inject_internal_error(template_name, action):
+def __aws_fis_inject_internal_error(template_name: str, action: dict) -> dict:
     fis_action = {}
 
     fis_action["ActionId"] = ACTION_TYPE_AWS_FIS_INJECT_API_INTERNAL_ERROR
 
     fis_action["Targets"] = {
-        "Instances": fis_target_name(template_name, action["target"])
+        "Instances": fis_target_name(template_name, action["Target"])
     }
 
-    fis_action["Parameters"] = {
-        "duration": action["duration"],
-        "percentage": action["duration"],
-        "operations": action["operations"]
-    }
+    fis_action["Parameters"] = {humps.camelize(k): v for k, v in action.get("Parameters", {}).items()}
 
     return fis_action

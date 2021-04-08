@@ -1,5 +1,6 @@
 import json
 import os
+from typing import Optional
 
 from decorators import handle_exception
 
@@ -12,14 +13,14 @@ class ConfigManager:
     def __init__(self):
         self.file = os.path.expanduser(CONFIG_FILE_PATH)
 
-    def list(self):
+    def list(self) -> Optional[dict]:
         if os.path.isfile(self.file):
             with open(self.file, 'r') as stream:
                 return json.load(stream)
         else:
             return None
 
-    def get(self, key):
+    def get(self, key: str) -> Optional[str]:
         if os.path.isfile(self.file):
             with open(self.file, 'r') as read_stream:
                 return json.load(read_stream).get(key)
@@ -27,7 +28,7 @@ class ConfigManager:
             return None
 
     @handle_exception
-    def set(self, key, value):
+    def set(self, key: str, value: str) -> None:
         if key in SUPPORTED_KEYS:
 
             if os.path.isfile(self.file):

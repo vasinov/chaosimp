@@ -6,21 +6,25 @@ Targets:
       - Key: "imp"
         Value: "ec2-experiment"
     SelectionMode: "ALL"
-actions:
-  - name: "install"
-    type: "imp:run-script"
-    path: "../../install-stress-ng.sh"
-    target: "ec2-instances"
-    duration: "PT1M"
-  - name: "stress-disk"
-    start_after:
+Actions:
+  - Name: "install"
+    Type: "imp:run-script"
+    Target: "ec2-instances"
+    Parameters:
+      Duration: "PT1M"
+    Document:
+      Path: "../../install-stress-ng.sh"
+  - Name: "stress-disk"
+    StartAfter:
       - "install"
-    type: "imp:run-script"
-    path: "stress-disk.sh"
-    target: "ec2-instances"
-    duration: "PT1M"
-    parameters:
-      - key: "Duration"
-        value: "20"
-      - key: "Filesize"
-        value: "10"
+      Type: "imp:run-script"
+    Target: "ec2-instances"
+    Parameters:
+      Duration: "PT1M"
+    Document:
+      Path: "stress-disk.sh"
+      Parameters:
+        - Key: "Duration"
+          Value: "20"
+        - Key: "Filesize"
+          Value: "10"

@@ -6,19 +6,23 @@ Targets:
       - Key: "imp"
         Value: "ec2-experiment"
     SelectionMode: "ALL"
-actions:
-  - name: "disable-dns"
-    type: "imp:run-script"
-    path: "disable-dns.sh"
-    target: "ec2-instances"
-    duration: "PT1M"
-    parameters:
-      - key: "Duration"
-        value: "30"
-  - name: "enable-dns"
-    start_after:
+Actions:
+  - Name: "disable-dns"
+    Type: "imp:run-script"
+    Target: "ec2-instances"
+    Parameters:
+      Duration: "PT1M"
+    Document:
+      Path: "disable-dns.sh"
+      Parameters:
+        - Key: "Duration"
+          Value: "30"
+  - Name: "enable-dns"
+    StartAfter:
       - "disable-dns"
-    type: "imp:run-script"
-    path: "enable-dns.sh"
-    target: "ec2-instances"
-    duration: "PT1M"
+    Type: "imp:run-script"
+    Target: "ec2-instances"
+    Parameters:
+      Duration: "PT1M"
+    Document:
+      Path: "enable-dns.sh"
