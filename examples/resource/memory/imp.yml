@@ -1,24 +1,24 @@
-description: "This experiment stresses % of memory"
-targets:
-  - name: "ec2-instances"
-    resource_type: "aws:ec2:instance"
-    resource_tags:
-      - key: "imp"
-        value: "ec2-experiment"
-    selection_mode: "ALL"
+Description: "This experiment stresses % of memory"
+Targets:
+  - Name: "ec2-instances"
+    ResourceType: "aws:ec2:instance"
+    ResourceTags:
+      - Key: "imp"
+        Value: "ec2-experiment"
+    SelectionMode: "ALL"
 actions:
   - name: "install"
     type: "imp:run-script"
     path: "../../install-stress-ng.sh"
     target: "ec2-instances"
-    max_duration: "PT1M"
+    duration: "PT1M"
   - name: "stress-mem"
     start_after:
       - "install"
     type: "imp:run-script"
     path: "stress-memory.sh"
     target: "ec2-instances"
-    max_duration: "PT1M"
+    duration: "PT1M"
     parameters:
       - key: "Duration"
         value: "20"

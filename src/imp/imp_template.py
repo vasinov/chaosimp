@@ -19,7 +19,9 @@ class ImpTemplate:
     def process(self, role_arn, processor):
         try:
             ssm_docs = []
-            cf_template = Template()
+            cf_template = Template(self.data["Description"])
+
+            # First, add SSM documents
 
             for action in self.data['actions']:
                 if action['type'] == ACTION_TYPE_IMP_RUN_SCRIPT:
@@ -32,6 +34,8 @@ class ImpTemplate:
                     cf_template.add_resource(ssm_document)
 
                     ssm_docs.append(action["name"])
+
+            # Now, create FIS templates
 
             cf_template.add_resource(
                 build_fis_template(
