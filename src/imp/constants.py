@@ -1,4 +1,7 @@
 ACTION_TYPE_IMP_RUN_SCRIPT = "imp:run-script"
 
-IMP_TAG_KEY = "CreatedByImp"
-IMP_ORIGINAL_NAME_KEY = "ImpOriginalName"
+TAG_KEY_EXPERIMENT = "CreatedByImp"
+TAG_KEY_RESOURCE_TYPE = "ImpResourceType"
+TAG_VALUE_RESOURCE_TYPE_TEMPLATE = "template"
+TAG_VALUE_RESOURCE_TYPE_AUTOMATION = "automation"
+TAG_KEY_ORIGINAL_NAME = "ImpOriginalName"

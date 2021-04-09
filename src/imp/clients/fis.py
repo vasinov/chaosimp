@@ -16,11 +16,11 @@ class Fis:
         if experiment_name:
             return list(
                 e for e in experiments
-                if e["tags"].get(IMP_TAG_KEY) and e["tags"].get(IMP_ORIGINAL_NAME_KEY) == experiment_name
+                if e["tags"].get(TAG_KEY_EXPERIMENT) and e["tags"].get(TAG_KEY_ORIGINAL_NAME) == experiment_name
             )
         else:
             return list(
-                e for e in experiments if e["tags"].get(IMP_TAG_KEY)
+                e for e in experiments if e["tags"].get(TAG_KEY_EXPERIMENT)
             )
 
     @handle_exception
@@ -47,8 +47,8 @@ class Fis:
             return self.fis_client.start_experiment(
                 tags={
                     "Name": fis_experiment_name(experiment_name),
-                    IMP_TAG_KEY: "true",
-                    IMP_ORIGINAL_NAME_KEY: experiment_name
+                    TAG_KEY_EXPERIMENT: "true",
+                    TAG_KEY_ORIGINAL_NAME: experiment_name
                 },
                 experimentTemplateId=experiment_template["id"]
             )["experiment"]

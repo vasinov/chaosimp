@@ -1,9 +1,10 @@
 import json
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 
 import troposphere.fis as fis
 import troposphere.ssm as ssm
 from troposphere import Sub
+
 from constants import *
 from resource_names import *
 

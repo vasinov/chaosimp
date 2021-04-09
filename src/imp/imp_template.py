@@ -49,6 +49,6 @@ class ImpTemplate:
                 )
             )
 
-            return processor(cf_template_name(self.name), self.name, cf_template)
+            return processor(cf_template_name(self.name), self.name, cf_template, TAG_VALUE_RESOURCE_TYPE_TEMPLATE)
         except yaml.YAMLError as e:
             cli_error(f'{type(e).__name__}: {e}')

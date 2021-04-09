@@ -3,7 +3,11 @@ import humps
 
 
 def cf_template_name(name: str) -> str:
-    return re.sub(r'[\W_]', '', humps.pascalize(f"imp_{name}"))
+    return re.sub(r'[\W_]', '', humps.pascalize(f"imp_template_{name}"))
+
+
+def cf_automation_name(name: str) -> str:
+    return re.sub(r'[\W_]', '', humps.pascalize(f"imp_automation_{name}"))
 
 
 def ssm_document_name(template_name: str, name: str, is_logical: bool) -> str:

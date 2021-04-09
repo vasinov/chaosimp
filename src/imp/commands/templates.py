@@ -14,7 +14,7 @@ def templates(ctx):
 @templates.command()
 @click.pass_context
 def list(ctx):
-    for template in reversed(CloudFormation().list()):
+    for template in reversed(CloudFormation().list(TAG_VALUE_RESOURCE_TYPE_TEMPLATE)):
         template_output(template)
 
 
@@ -31,9 +31,9 @@ def get(ctx, name):
 @click.option("--role-arn", "-r", type=click.STRING, required=not ConfigManager().get(TEMPLATE_ROLE_ARN_KEY))
 @click.argument("name", type=click.STRING)
 def create(ctx, path, role_arn, name):
-    cli_success("Creating new template...")
     role_arn = role_arn or ConfigManager().get(TEMPLATE_ROLE_ARN_KEY)
 
+    cli_success("Creating new template...")
     ImpTemplate(path, name).process(role_arn, CloudFormation().create)
 
 
@@ -43,6 +43,8 @@ def create(ctx, path, role_arn, name):
 @click.option("--role-arn", "-r", type=click.STRING,  required=False)
 @click.argument("name", type=click.STRING)
 def update(ctx, path, role_arn, name):
+    role_arn = role_arn or ConfigManager().get(TEMPLATE_ROLE_ARN_KEY)
+
     cli_success("Updating template...")
     ImpTemplate(path, name).process(role_arn, CloudFormation().update)
 
