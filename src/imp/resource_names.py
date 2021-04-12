@@ -11,11 +11,19 @@ def cf_automation_name(name: str) -> str:
 
 
 def lambda_function_name(name: str) -> str:
-    return re.sub(r'[\W_]', '', humps.pascalize(f"lambda_{name}"))
+    return re.sub(r'[\W_]', '', humps.pascalize(f"lambda_function_{name}"))
+
+
+def lambda_permission_name(name: str) -> str:
+    return re.sub(r'[\W_]', '', humps.pascalize(f"lambda_permission_{name}"))
+
+
+def rule_name(name: str) -> str:
+    return re.sub(r'[\W_]', '', humps.pascalize(f"rule_{name}"))
 
 
 def iam_assume_role_name(name: str) -> str:
-    return re.sub(r'[\W_]', '', humps.pascalize(f"_assume_role_{name}"))
+    return re.sub(r'[\W_]', '', humps.pascalize(f"assume_role_{name}"))
 
 
 def ssm_document_name(template_name: str, name: str, is_logical: bool) -> str:
