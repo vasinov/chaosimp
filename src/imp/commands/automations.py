@@ -2,7 +2,7 @@ import click
 
 from cli_output import cli_success, automation_output
 from clients.cloud_formation import CloudFormation
-from constants import *
+from name_constants import *
 from imp_automation import ImpAutomation
 from resource_names import cf_automation_name
 

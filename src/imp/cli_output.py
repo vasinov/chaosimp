@@ -1,6 +1,6 @@
 import click
 
-from constants import *
+from name_constants import *
 
 
 def automation_output(automation: dict) -> None:

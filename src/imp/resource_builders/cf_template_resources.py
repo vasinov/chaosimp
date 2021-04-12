@@ -5,7 +5,7 @@ import troposphere.fis as fis
 import troposphere.ssm as ssm
 from troposphere import Sub
 
-from constants import *
+from name_constants import *
 from resource_names import *
 
 

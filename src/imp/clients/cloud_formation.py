@@ -1,7 +1,7 @@
 import boto3
 from troposphere import Template
 
-from constants import *
+from name_constants import *
 from decorators import handle_exception
 
 

@@ -1,9 +1,12 @@
-import troposphere.iam as iam
 import troposphere.awslambda as awslambda
 import troposphere.events as events
+import troposphere.iam as iam
 from troposphere import GetAtt
-
 from resource_names import *
+
+LAMBDA_RUNTIME = "python3.8"
+LAMBDA_TIMEOUT = 60
+LAMBDA_MEMORY_SIZE = 128
 
 
 def build_assume_role(name: str) -> iam.Role:
@@ -28,7 +31,9 @@ def build_lambda_function(name: str) -> awslambda.Function:
 
     function_code.ZipFile = "def imp_handler(event, context):\n  message = \"Hello Lambda World!\"\n  return message\n"
 
-    function.Runtime = "python3.8"
+    function.Runtime = LAMBDA_RUNTIME
+    function.Timeout = LAMBDA_TIMEOUT
+    function.MemorySize = LAMBDA_MEMORY_SIZE
     function.Handler = "index.imp_handler"
     function.Role = GetAtt(iam_assume_role_name(name), "Arn")
     function.Code = function_code

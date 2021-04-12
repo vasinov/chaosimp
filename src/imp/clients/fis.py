@@ -1,6 +1,6 @@
 import boto3
 
-from constants import *
+from name_constants import *
 from resource_names import *
 from decorators import handle_exception
 

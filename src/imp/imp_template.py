@@ -5,7 +5,7 @@ from troposphere import Template
 from action_parsers.imp_run_script_parser import *
 from resource_builders.cf_template_resources import *
 from cli_output import cli_error
-from constants import *
+from name_constants import *
 
 
 class ImpTemplate:
