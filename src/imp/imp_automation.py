@@ -11,16 +11,17 @@ from resource_names import cf_automation_name
 
 
 class ImpAutomation:
-    def __init__(self, name: str, schedule: str):
+    def __init__(self, name: str, schedule: str, template_name: str):
         self.name = name
         self.schedule = schedule
+        self.template_name = template_name
 
     def process(self, processor: LambdaType):
         try:
             cf_template = Template("Imp automation.")
 
             cf_template.add_resource(build_assume_role(self.name))
-            cf_template.add_resource(build_lambda_function(self.name))
+            cf_template.add_resource(build_lambda_function(self.name, self.template_name))
             cf_template.add_resource(build_rule(self.name, self.schedule))
             cf_template.add_resource(build_lambda_permission(self.name))
 

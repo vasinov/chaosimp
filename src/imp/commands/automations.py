@@ -30,19 +30,21 @@ def get(ctx, name):
 @automations.command()
 @click.pass_context
 @click.option("--schedule", "-s", type=click.STRING, required=True)
+@click.option("--template", "-t", type=click.STRING, required=True)
 @click.argument("name", type=click.STRING)
-def create(ctx, schedule, name):
+def create(ctx, schedule, template, name):
     cli_success("Creating new automation...")
-    ImpAutomation(name, schedule).process(CloudFormation().create)
+    ImpAutomation(name, schedule, template).process(CloudFormation().create)
 
 
 @automations.command()
 @click.pass_context
 @click.option("--schedule", "-s", type=click.STRING, required=True)
+@click.option("--template", "-t", type=click.STRING, required=True)
 @click.argument("name", type=click.STRING)
-def update(ctx, schedule, name):
+def update(ctx, schedule, template, name):
     cli_success("Updating automation...")
-    ImpAutomation(name, schedule).process(CloudFormation().update)
+    ImpAutomation(name, schedule, template).process(CloudFormation().update)
 
 
 @automations.command()

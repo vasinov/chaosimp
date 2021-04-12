@@ -25,7 +25,7 @@ def build_assume_role(name: str) -> iam.Role:
     return role
 
 
-def build_lambda_function(name: str) -> awslambda.Function:
+def build_lambda_function(name: str, template_name: str) -> awslambda.Function:
     function = awslambda.Function(lambda_function_name(name))
     function_code = awslambda.Code()
 
