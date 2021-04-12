@@ -9,7 +9,7 @@ from constants import *
 from resource_names import *
 
 
-def build_ssm_document(template_name: str, name: str, ssm_content: dict):
+def build_ssm_document(template_name: str, name: str, ssm_content: dict) -> ssm.Document:
     doc = ssm.Document(ssm_document_name(template_name, name, True))
 
     doc.DocumentType = "Command"

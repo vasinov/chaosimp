@@ -3,7 +3,7 @@ from types import LambdaType
 import yaml
 from troposphere import Template
 from action_parsers.imp_run_script_parser import *
-from cf_resource_builder import *
+from resource_builders.cf_template_resources import *
 from cli_output import cli_error
 from constants import *
 
@@ -49,6 +49,8 @@ class ImpTemplate:
                 )
             )
 
-            return processor(cf_template_name(self.name), self.name, cf_template, TAG_VALUE_RESOURCE_TYPE_TEMPLATE)
+            return processor(
+                cf_template_name(self.name), self.name, cf_template, TAG_VALUE_RESOURCE_TYPE_TEMPLATE, False
+            )
         except yaml.YAMLError as e:
             cli_error(f'{type(e).__name__}: {e}')

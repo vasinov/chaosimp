@@ -48,3 +48,4 @@ def update(ctx, name):
 @click.argument("name", type=click.STRING)
 def delete(ctx, name):
     cli_success("Deleting automation...")
+    CloudFormation().delete(cf_automation_name(name))

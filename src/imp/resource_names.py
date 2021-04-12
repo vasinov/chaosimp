@@ -10,6 +10,14 @@ def cf_automation_name(name: str) -> str:
     return re.sub(r'[\W_]', '', humps.pascalize(f"imp_automation_{name}"))
 
 
+def lambda_function_name(name: str) -> str:
+    return re.sub(r'[\W_]', '', humps.pascalize(f"lambda_{name}"))
+
+
+def iam_assume_role_name(name: str) -> str:
+    return re.sub(r'[\W_]', '', humps.pascalize(f"_assume_role_{name}"))
+
+
 def ssm_document_name(template_name: str, name: str, is_logical: bool) -> str:
     if is_logical:
         return re.sub(r'[\W_]', '', humps.pascalize(f"ssm_doc_{template_name}_{name}"))

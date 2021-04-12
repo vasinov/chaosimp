@@ -24,9 +24,10 @@ class CloudFormation:
         )["Stacks"][0]
 
     @handle_exception
-    def create(self, name: str, original_name: str, template: Template, resource_type: str):
+    def create(self, name: str, original_name: str, template: Template, resource_type: str, iam_capabilities: bool):
         return self.cf_client.create_stack(
             StackName=name,
+            Capabilities=(["CAPABILITY_IAM"] if iam_capabilities else []),
             TemplateBody=template.to_json(),
             DisableRollback=True,
             Tags=[
