@@ -3,8 +3,7 @@ from types import LambdaType
 import yaml
 from troposphere import Template
 
-from resource_builders.cf_automation_resources import build_assume_role, build_lambda_function, build_rule, \
-    build_lambda_permission
+from cf_resource_builders.automation import *
 from cli_output import cli_error
 from name_constants import *
 from resource_names import cf_automation_name
