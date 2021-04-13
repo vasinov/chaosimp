@@ -51,7 +51,8 @@ def build_fis_template(template_name: str, role_arn: str, data: dict, ssm_docs: 
     doc.StopConditions = stop_conditions
 
     doc.Tags = {
-        "Name": fis_template_name(template_name, False)
+        "Name": fis_template_name(template_name, False),
+        TAG_KEY_TEMPLATE: "true"
     }
 
     return doc

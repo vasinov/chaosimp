@@ -1,11 +1,10 @@
 import json
-
 import troposphere.awslambda as awslambda
 import troposphere.events as events
 import troposphere.iam as iam
 from troposphere import GetAtt
-
 from clients.fis import Fis
+from name_constants import *
 from resource_names import *
 
 LAMBDA_RUNTIME = "python3.8"
@@ -15,25 +14,46 @@ LAMBDA_MEMORY_SIZE = 128
 
 def build_assume_role(name: str) -> iam.Role:
     role = iam.Role(iam_assume_role_name(name))
+    policy = iam.Policy()
+
+    policy.PolicyName = "FisStartExperiment"
+    policy.PolicyDocument = {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": "fis:StartExperiment",
+                "Effect": "Allow",
+                "Resource": "arn:aws:fis:*:*:experiment-template/*"
+            }
+        ]
+    }
 
     role.AssumeRolePolicyDocument = {
+        "Version": "2012-10-17",
         "Statement": {
             "Effect": "Allow",
             "Principal": {
                 "Service": "lambda.amazonaws.com"
             },
-            "Action": "sts:AssumeRole"
+            "Action": "sts:AssumeRole",
+            "Condition": {
+                "StringEquals": {
+                    f"aws:ResourceTag/{TAG_KEY_TEMPLATE}": "true"
+                }
+            }
         }
     }
+    role.Path = "/"
+    role.Policies = [policy]
 
     return role
 
 
-def build_lambda_function(name: str) -> awslambda.Function:
+def build_lambda_function(name: str, content: str) -> awslambda.Function:
     function = awslambda.Function(lambda_function_name(name))
     function_code = awslambda.Code()
 
-    function_code.ZipFile = "def imp_handler(event, context):\n  message = \"Hello Lambda World!\"\n  return message\n"
+    function_code.ZipFile = content
 
     function.Runtime = LAMBDA_RUNTIME
     function.Timeout = LAMBDA_TIMEOUT
