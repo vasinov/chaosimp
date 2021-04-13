@@ -1,7 +1,11 @@
+import json
+
 import troposphere.awslambda as awslambda
 import troposphere.events as events
 import troposphere.iam as iam
 from troposphere import GetAtt
+
+from clients.fis import Fis
 from resource_names import *
 
 LAMBDA_RUNTIME = "python3.8"
@@ -25,7 +29,7 @@ def build_assume_role(name: str) -> iam.Role:
     return role
 
 
-def build_lambda_function(name: str, template_name: str) -> awslambda.Function:
+def build_lambda_function(name: str) -> awslambda.Function:
     function = awslambda.Function(lambda_function_name(name))
     function_code = awslambda.Code()
 
@@ -41,17 +45,28 @@ def build_lambda_function(name: str, template_name: str) -> awslambda.Function:
     return function
 
 
-def build_rule(name: str, schedule: str) -> events.Rule:
-    rule = events.Rule(rule_name(name))
-    target = events.Target()
+def build_rule(name: str, schedule: str, template_name: str) -> events.Rule:
+    experiment_template = Fis().get_template(template_name)
 
-    target.Arn = GetAtt(lambda_function_name(name), "Arn")
-    target.Id = "1"
+    if experiment_template is None:
+        raise Exception("AWS FIS template not found.")
+    else:
+        rule = events.Rule(rule_name(name))
+        target = events.Target()
 
-    rule.ScheduleExpression = schedule
-    rule.Targets = [target]
+        target.Arn = GetAtt(lambda_function_name(name), "Arn")
+        target.Id = "1"
+        target.Input = json.dumps(
+            {
+                "template_name": fis_template_name(template_name, False),
+                "template_id": experiment_template["id"]
+            }
+        )
 
-    return rule
+        rule.ScheduleExpression = schedule
+        rule.Targets = [target]
+
+        return rule
 
 
 def build_lambda_permission(name: str) -> awslambda.Permission:

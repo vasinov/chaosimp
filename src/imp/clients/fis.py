@@ -35,11 +35,7 @@ class Fis:
 
     @handle_exception
     def start(self, template_name: str, experiment_name: str):
-        templates = self.fis_client.list_experiment_templates()["experimentTemplates"]
-        experiment_template = next(
-            (t for t in templates if t["tags"].get("Name") == fis_template_name(template_name, False)),
-            None
-        )
+        experiment_template = self.get_template(template_name)
 
         if experiment_template is None:
             raise Exception("AWS FIS template not found.")
@@ -57,4 +53,12 @@ class Fis:
     def stop(self, experiment_id: str):
         self.fis_client.stop_experiment(
             id=experiment_id
+        )
+
+    def get_template(self, template_name: str):
+        templates = self.fis_client.list_experiment_templates()["experimentTemplates"]
+
+        return next(
+            (t for t in templates if t["tags"].get("Name") == fis_template_name(template_name, False)),
+            None
         )

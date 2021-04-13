@@ -20,12 +20,12 @@ class ImpAutomation:
             cf_template = Template("Imp automation.")
 
             cf_template.add_resource(build_assume_role(self.name))
-            cf_template.add_resource(build_lambda_function(self.name, self.template_name))
-            cf_template.add_resource(build_rule(self.name, self.schedule))
+            cf_template.add_resource(build_lambda_function(self.name))
+            cf_template.add_resource(build_rule(self.name, self.schedule, self.template_name))
             cf_template.add_resource(build_lambda_permission(self.name))
 
             return processor(
                 cf_automation_name(self.name), self.name, cf_template, TAG_VALUE_RESOURCE_TYPE_AUTOMATION, True
             )
-        except yaml.YAMLError as e:
+        except Exception as e:
             cli_error(f'{type(e).__name__}: {e}')
