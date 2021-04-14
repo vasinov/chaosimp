@@ -1,8 +1,8 @@
 import boto3
 from troposphere import Template
 
-from src.name_constants import *
-from src.decorators import handle_exception
+from chaosimp.name_constants import *
+from chaosimp.decorators import handle_exception
 
 
 class CloudFormation:

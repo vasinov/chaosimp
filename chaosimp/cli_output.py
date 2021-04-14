@@ -1,6 +1,6 @@
 import click
 
-from src.name_constants import *
+from chaosimp.name_constants import *
 
 
 def automation_output(automation: dict) -> None:

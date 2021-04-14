@@ -1,10 +1,10 @@
 import click
 
-from src.cli_output import cli_success, automation_output
-from src.clients.cloud_formation import CloudFormation
-from src.name_constants import *
-from src.automation import Automation
-from src.resource_names import cf_automation_name
+from chaosimp.cli_output import cli_success, automation_output
+from chaosimp.clients.cloud_formation import CloudFormation
+from chaosimp.name_constants import *
+from chaosimp.automation import Automation
+from chaosimp.resource_names import cf_automation_name
 
 
 @click.group()

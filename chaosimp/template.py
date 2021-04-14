@@ -2,9 +2,9 @@ import os
 from types import LambdaType
 import yaml
 from troposphere import Template
-from src.cf_resource_builders.template import *
-from src.cli_output import cli_error
-from src.name_constants import *
+from chaosimp.cf_resource_builders.template import *
+from chaosimp.cli_output import cli_error
+from chaosimp.name_constants import *
 
 
 class Template:

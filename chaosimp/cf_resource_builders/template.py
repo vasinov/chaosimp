@@ -5,8 +5,8 @@ import troposphere.fis as fis
 import troposphere.ssm as ssm
 from troposphere import Sub
 
-from src.name_constants import *
-from src.resource_names import *
+from chaosimp.name_constants import *
+from chaosimp.resource_names import *
 
 
 def build_ssm_document(template_name: str, name: str, ssm_content: dict) -> ssm.Document:

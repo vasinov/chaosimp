@@ -1,6 +1,6 @@
 import click
-from src.cli_output import experiment_output, cli_success
-from src.clients.fis import *
+from chaosimp.cli_output import experiment_output, cli_success
+from chaosimp.clients.fis import *
 
 
 @click.group()

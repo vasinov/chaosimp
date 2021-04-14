@@ -1,7 +1,7 @@
 import click
 
-from src.cli_output import cli_info, cli_warn, cli_success
-from src.config_manager import ConfigManager
+from chaosimp.cli_output import cli_info, cli_warn, cli_success
+from chaosimp.config_manager import ConfigManager
 
 
 @click.group()

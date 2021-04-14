@@ -1,8 +1,8 @@
 import click
-from src.commands.automations import automations
-from src.commands.config import config
-from src.commands.experiments import experiments
-from src.commands.templates import templates
+from chaosimp.commands.automations import automations
+from chaosimp.commands.config import config
+from chaosimp.commands.experiments import experiments
+from chaosimp.commands.templates import templates
 
 
 @click.group()

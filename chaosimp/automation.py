@@ -1,9 +1,9 @@
 from types import LambdaType
 from troposphere import Template
-from src.cf_resource_builders.automation import *
-from src.cli_output import cli_error
-from src.name_constants import *
-from src.resource_names import cf_automation_name
+from chaosimp.cf_resource_builders.automation import *
+from chaosimp.cli_output import cli_error
+from chaosimp.name_constants import *
+from chaosimp.resource_names import cf_automation_name
 
 
 class Automation:

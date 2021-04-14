@@ -17,6 +17,6 @@ setup(
         "pyhumps>=1.6.0"
     ],
     entry_points={
-        "console_scripts": ["imp=src.main:main"]
+        "console_scripts": ["imp=chaosimp.main:main"]
     }
 )

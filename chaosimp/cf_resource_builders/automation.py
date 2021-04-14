@@ -3,9 +3,9 @@ import troposphere.awslambda as awslambda
 import troposphere.events as events
 import troposphere.iam as iam
 from troposphere import GetAtt
-from src.clients.fis import Fis
-from src.name_constants import *
-from src.resource_names import *
+from chaosimp.clients.fis import Fis
+from chaosimp.name_constants import *
+from chaosimp.resource_names import *
 
 LAMBDA_RUNTIME = "python3.8"
 LAMBDA_TIMEOUT = 60

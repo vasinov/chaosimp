@@ -1,8 +1,8 @@
 import click
-from src.cli_output import template_output, cli_success
-from src.clients.cloud_formation import *
-from src.config_manager import ConfigManager, TEMPLATE_ROLE_ARN_KEY
-from src.template import *
+from chaosimp.cli_output import template_output, cli_success
+from chaosimp.clients.cloud_formation import *
+from chaosimp.config_manager import ConfigManager, TEMPLATE_ROLE_ARN_KEY
+from chaosimp.template import *
 
 
 @click.group()

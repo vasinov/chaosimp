@@ -2,7 +2,7 @@ import json
 import os
 from typing import Optional
 
-from src.decorators import handle_exception
+from chaosimp.decorators import handle_exception
 
 TEMPLATE_ROLE_ARN_KEY = "TemplateRoleArn"
 SUPPORTED_KEYS = [TEMPLATE_ROLE_ARN_KEY]
