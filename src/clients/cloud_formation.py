@@ -1,8 +1,8 @@
 import boto3
 from troposphere import Template
 
-from name_constants import *
-from decorators import handle_exception
+from src.name_constants import *
+from src.decorators import handle_exception
 
 
 class CloudFormation:

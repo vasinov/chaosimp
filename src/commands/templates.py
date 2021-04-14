@@ -1,8 +1,8 @@
 import click
-from cli_output import template_output, cli_success
-from clients.cloud_formation import *
-from config_manager import ConfigManager, TEMPLATE_ROLE_ARN_KEY
-from imp_template import *
+from src.cli_output import template_output, cli_success
+from src.clients.cloud_formation import *
+from src.config_manager import ConfigManager, TEMPLATE_ROLE_ARN_KEY
+from src.imp_template import *
 
 
 @click.group()

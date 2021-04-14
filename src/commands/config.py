@@ -1,7 +1,7 @@
 import click
 
-from cli_output import cli_info, cli_warn, cli_success
-from config_manager import ConfigManager
+from src.cli_output import cli_info, cli_warn, cli_success
+from src.config_manager import ConfigManager
 
 
 @click.group()

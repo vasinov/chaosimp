@@ -1,10 +1,10 @@
 import click
 
-from cli_output import cli_success, automation_output
-from clients.cloud_formation import CloudFormation
-from name_constants import *
-from imp_automation import ImpAutomation
-from resource_names import cf_automation_name
+from src.cli_output import cli_success, automation_output
+from src.clients.cloud_formation import CloudFormation
+from src.name_constants import *
+from src.imp_automation import ImpAutomation
+from src.resource_names import cf_automation_name
 
 
 @click.group()

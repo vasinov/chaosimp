@@ -1,8 +1,8 @@
 import boto3
 
-from name_constants import *
-from resource_names import *
-from decorators import handle_exception
+from src.name_constants import *
+from src.resource_names import *
+from src.decorators import handle_exception
 
 
 class Fis:

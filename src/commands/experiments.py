@@ -1,6 +1,6 @@
 import click
-from cli_output import experiment_output, cli_success
-from clients.fis import *
+from src.cli_output import experiment_output, cli_success
+from src.clients.fis import *
 
 
 @click.group()

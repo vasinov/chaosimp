@@ -1,6 +1,6 @@
 from types import LambdaType
 
-from cli_output import cli_error
+from src.cli_output import cli_error
 
 
 def handle_exception(func: LambdaType):
