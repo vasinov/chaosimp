@@ -7,7 +7,7 @@ from src.cli_output import cli_error
 from src.name_constants import *
 
 
-class ImpTemplate:
+class Template:
     def __init__(self, path: str, name: str):
         self.path = path
         self.name = name

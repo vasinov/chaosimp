@@ -3,7 +3,7 @@ import click
 from src.cli_output import cli_success, automation_output
 from src.clients.cloud_formation import CloudFormation
 from src.name_constants import *
-from src.imp_automation import ImpAutomation
+from src.automation import Automation
 from src.resource_names import cf_automation_name
 
 
@@ -35,7 +35,7 @@ def get(ctx, name):
 @click.argument("name", type=click.STRING)
 def create(ctx, schedule, template, name, image):
     cli_success("Creating new automation...")
-    ImpAutomation(name, schedule, template, image).process(CloudFormation().create)
+    Automation(name, schedule, template, image).process(CloudFormation().create)
 
 
 @automations.command()
@@ -46,7 +46,7 @@ def create(ctx, schedule, template, name, image):
 @click.argument("name", type=click.STRING)
 def update(ctx, schedule, template, name, image):
     cli_success("Updating automation...")
-    ImpAutomation(name, schedule, template, image).process(CloudFormation().update)
+    Automation(name, schedule, template, image).process(CloudFormation().update)
 
 
 @automations.command()

@@ -6,7 +6,7 @@ from src.name_constants import *
 from src.resource_names import cf_automation_name
 
 
-class ImpAutomation:
+class Automation:
     def __init__(self, name: str, schedule: str, template_name: str, image: str):
         self.name = name
         self.schedule = schedule
