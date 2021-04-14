@@ -16,14 +16,25 @@ def build_assume_role(name: str) -> iam.Role:
     role = iam.Role(iam_assume_role_name(name))
     policy = iam.Policy()
 
-    policy.PolicyName = "FisStartExperiment"
+    policy.PolicyName = "ImpRunExperiment"
     policy.PolicyDocument = {
         "Version": "2012-10-17",
         "Statement": [
             {
-                "Action": "fis:StartExperiment",
+                "Action": [
+                    "fis:StartExperiment",
+                    "fis:TagResource"
+                ],
                 "Effect": "Allow",
-                "Resource": "arn:aws:fis:*:*:experiment-template/*"
+                "Resource": [
+                    "arn:aws:fis:*:*:experiment/*",
+                    "arn:aws:fis:*:*:experiment-template/*",
+                ],
+                "Condition": {
+                    "StringEquals": {
+                        f"aws:ResourceTag/{TAG_KEY_TEMPLATE}": "true"
+                    }
+                }
             }
         ]
     }
@@ -35,12 +46,7 @@ def build_assume_role(name: str) -> iam.Role:
             "Principal": {
                 "Service": "lambda.amazonaws.com"
             },
-            "Action": "sts:AssumeRole",
-            "Condition": {
-                "StringEquals": {
-                    f"aws:ResourceTag/{TAG_KEY_TEMPLATE}": "true"
-                }
-            }
+            "Action": "sts:AssumeRole"
         }
     }
     role.Path = "/"
@@ -49,16 +55,14 @@ def build_assume_role(name: str) -> iam.Role:
     return role
 
 
-def build_lambda_function(name: str, content: str) -> awslambda.Function:
+def build_lambda_function(name: str, image_uri: str) -> awslambda.Function:
     function = awslambda.Function(lambda_function_name(name))
     function_code = awslambda.Code()
 
-    function_code.ZipFile = content
-
-    function.Runtime = LAMBDA_RUNTIME
+    function_code.ImageUri = image_uri
+    function.PackageType = "Image"
     function.Timeout = LAMBDA_TIMEOUT
     function.MemorySize = LAMBDA_MEMORY_SIZE
-    function.Handler = "index.imp_handler"
     function.Role = GetAtt(iam_assume_role_name(name), "Arn")
     function.Code = function_code
 
@@ -78,7 +82,7 @@ def build_rule(name: str, schedule: str, template_name: str) -> events.Rule:
         target.Id = "1"
         target.Input = json.dumps(
             {
-                "template_name": fis_template_name(template_name, False),
+                "experiment_name": fis_automated_experiment_name(template_name),
                 "template_id": experiment_template["id"]
             }
         )

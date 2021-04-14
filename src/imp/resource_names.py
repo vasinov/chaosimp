@@ -44,6 +44,10 @@ def fis_experiment_name(name: str) -> str:
     return re.sub(r'[\W_]', '', humps.pascalize(f"imp_{name}"))
 
 
+def fis_automated_experiment_name(name: str) -> str:
+    return re.sub(r'[\W_]', '', humps.pascalize(f"imp_automation_{name}"))
+
+
 def fis_action_name(name: str) -> str:
     return re.sub(r'[\W_]', '', humps.pascalize(f"fis_action_{name}"))
 
