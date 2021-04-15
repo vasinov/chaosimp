@@ -62,6 +62,3 @@ aws ecr get-login-password | docker login --username AWS --password-stdin <AWS_A
 docker tag imp-automation:latest <REPO_URL>/imp-automation:latest
 docker push <REPO_URL>/imp-automation:latest
 ```
-
-## Benefits over Vanilla AWS SSM/FIS/Lambda
-
