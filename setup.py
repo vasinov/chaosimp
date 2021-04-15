@@ -14,13 +14,16 @@ setup(
     author="Vasily Vasinov",
     author_email="vasinov@me.com",
     license="Apache 2.0",
+    dependency_links=[
+        "http://github.com/cloudtools/troposphere/tarball/master#egg=troposphere-2.7.1"  # keep until v2.7.1 is released
+    ],
     install_requires=[
-        "pyyaml",
-        "click",
-        "boto3",
-        "cfn_flip",
-        "troposphere @ git+https://github.com/cloudtools/troposphere@master",  # until v2.7.1 is released
-        "pyhumps>=1.6.0"
+        "pyyaml>=5",
+        "click>=7",
+        "boto3>=1.17",
+        "cfn_flip>=1",
+        "troposphere>=2.7.1",
+        "pyhumps>=1"
     ],
     entry_points={
         "console_scripts": ["imp=chaosimp.__main__:main"]
