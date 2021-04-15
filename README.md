@@ -1,8 +1,11 @@
 # Chaos Imp
 
-Chaos Imp is a tool for creating, executing, and continuously running [chaos engineering](https://principlesofchaos.org/) (CE) experiments on AWS.
+[![PyPI Version](https://img.shields.io/pypi/v/chaosimp.svg)](https://pypi.python.org/pypi/chaosimp)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/gitbucket/gitbucket/blob/master/LICENSE)
 
-Chaos Imp uses a plethora of AWS services and mixes them in order to create an easy-to-use tool around the following components of the CE process:
+Chaos Imp is a framework for creating, executing, and running [chaos engineering](https://principlesofchaos.org/) (CE) experiments on AWS. It provides shorthand syntax to express experiment templates, executions, and automations. With just a few lines per resource, you can define the application you want and model it using YAML. During deployment, Chaos Imp transforms and expands your YAML and shell scripts into AWS CloudFormation syntax, enabling you to run chaos experiments faster.
+
+Chaos Imp uses a plethora of AWS services under the hood. It glues SSM, FIS, Events, and Lambda APIs to create an easy-to-use tool around the following components of the CE process:
 
 - Defining failure injections at the infrastructure, application, and security levels.
 - Running CE experiments in a controlled way by using AWS access capabilities.
@@ -32,7 +35,7 @@ pip install chaosimp
 
 Now, you can use various elements from the package in your projects (namespace `chaosimp`) as well as running CLI commands with `imp`.
 
-Check out [Chaos Imp example templates](https://github.com/chaosops/chaosimp-examples) that cover resource, network, and state chaos experiments.
+Check out [Chaos Imp example templates](https://github.com/chaosops-oss/chaosimp-examples) that cover resource, network, and state chaos experiments.
 
 ## Define Experiment Boundaries
 
