@@ -34,7 +34,7 @@ def create(ctx, path, role_arn, name):
     role_arn = role_arn or ConfigManager().get(TEMPLATE_ROLE_ARN_KEY)
 
     cli_success("Creating new template...")
-    ImpTemplate(path, name).process(role_arn, CloudFormation().create)
+    Template(path, name).process(role_arn, CloudFormation().create)
 
 
 @templates.command()
@@ -46,7 +46,7 @@ def update(ctx, path, role_arn, name):
     role_arn = role_arn or ConfigManager().get(TEMPLATE_ROLE_ARN_KEY)
 
     cli_success("Updating template...")
-    ImpTemplate(path, name).process(role_arn, CloudFormation().update)
+    Template(path, name).process(role_arn, CloudFormation().update)
 
 
 @templates.command()

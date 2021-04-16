@@ -1,7 +1,7 @@
 import os
 from types import LambdaType
 import yaml
-from troposphere import Template
+import troposphere
 from chaosimp.cf_resource_builders.template import *
 from chaosimp.cli_output import cli_error
 from chaosimp.name_constants import *
@@ -20,7 +20,7 @@ class Template:
     def process(self, role_arn: str, processor: LambdaType):
         try:
             ssm_docs = []
-            cf_template = Template(self.data["Description"])
+            cf_template = troposphere.Template(self.data["Description"])
 
             # First, add SSM documents
 
