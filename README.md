@@ -28,28 +28,20 @@ pip install chaosimp
 
 Now, you can start using scripts and classes from the `chaosimp` package. You can also run CLI commands. Chaos Imp supports four namespaces:
 
-- config
-- templates
-- experiments
-- automations
+- `config`: `get`, `list`, and `set` operations.
+- `templates`: `list`, `show`, `create`, `update`, and `delete` operations.
+- `experiments`: `get`, `get-by-id`, `list`, `start`, and `stop` operations.
+- `automations`: `list`, `show`, `create`, `update`, and `delete` operations.
 
-`config` is used for Chaos Imp-specific configuration. It supports `get`, `list`, and `set` operations. All other namespaces support the following operations:
+For example, to list all of your templates run:
 
-- list
-- show
-- create
-- update
-- delete
-
-For example, to list all of your templates simply run:
-
-```shell
+```bash
 imp templates list
 ```
 
 The CLI is self-documenting, so you can learn about any command by running:
 
-```shell
+```bash
 imp <COMMAND_NAME> --help
 ```
 
@@ -98,7 +90,9 @@ Chaos Imp introduces its own namespace and action type into the mix: `imp:run-sc
 
 Now, we just add an experiment script file `stress-cpu.sh`:
 
-```shell
+```bash
+#!/bin/bash
+
 sudo yum -y install stress-ng
 stress-ng --cpu 0 --cpu-method matrixprod --cpu-load 100 -t 20s
 ```
@@ -111,28 +105,63 @@ Before creating a template, you have to create a role with a [policy](https://gi
 
 You can reference this role with every template creation call by using `--role-arn` but it's much more convenient to store it in the local config:
 
-```shell
+```bash
 imp config set TemplateRoleArn <ROLE_ARN>
 ```
 
 We are finally ready to create our first template:
 
-```shell
+```bash
 imp templates create --path . cpu-stress
 ```
 
 ### Running Experiments
 
-TBD
+Before running an experiment on EC2 instances those instances have to be assigned a role with [a policy](https://github.com/chaosops-oss/chaosimp-iam-policies/blob/master/ImpSsm.json) that allows them to interact with SSM. This is required for all FIS SSM actions as well as Chaos Imp special actions.
+
+Once instances are ready, you can run an experiment based on the template we created:
+
+```bash
+imp experiments start --template cpu-stress my-cpu-experiment
+```
+
+This will create and run an experiment in FIS. If you run subsequent experiments with the same name you can list all experiment executions by running:
+
+```bash
+imp experiments get my-cpu-experiment
+```
+
+If you are interested in the specific instance of an experiment then run:
+
+```shell
+imp experiments get-by-id <EXPERIMENT_ID>
+```
 
 ### Automating Experiments
 
-TBD
+Experiment automation is a work in progress. Chaos Imp uses a combination of CloudWatch Events and Lambda Functions to create automations.
 
-Create custom automation Lambda function:
+Unfortunately, AWS SDK is out of date in the Lambda runtime and doesn't support FIS yet, so you'll have to create a Docker image with an updated AWS SDK in it.
+
+First, [download](https://github.com/chaosops-oss/chaosimp/tree/master/lambda_image) `Dockerfile` and `app.py` on your machine. Then run the following commands to create and push an image to your private AWS ECR:
 
 ```bash
 aws ecr get-login-password | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com
+docker build -t imp-automation .
 docker tag imp-automation:latest <REPO_URL>/imp-automation:latest
 docker push <REPO_URL>/imp-automation:latest
 ```
+
+This will become unnecessary once Lambda supports a more recent SDK.
+
+To create an automation run:
+
+```shell
+imp automations create \
+    --schedule="rate(30 minutes)" \
+    --template="cpu-stress" \
+    --image=<AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/imp-automation:latest \
+    cpu-stress-automation
+```
+
+This will create a CloudWatch Event Rule that will kickoff a Lambda every 30 minutes. The Lambda starts a FIS experiment.
