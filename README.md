@@ -45,7 +45,7 @@ The CLI is self-documenting, so you can learn about any command by running:
 imp <COMMAND_NAME> --help
 ```
 
-## Creating Experiment Templates
+## Getting Started
 
 Check out [Chaos Imp example templates](https://github.com/chaosops-oss/chaosimp-examples) that include resource, network, and state chaos experiments.
 
@@ -146,7 +146,11 @@ Unfortunately, AWS SDK is out of date in the Lambda runtime and doesn't support 
 First, [download](https://github.com/chaosops-oss/chaosimp/tree/master/lambda_image) `Dockerfile` and `app.py` on your machine. Then run the following commands to create and push an image to your private AWS ECR:
 
 ```bash
-aws ecr get-login-password | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com
+aws ecr get-login-password | docker login \
+    --username AWS \
+    --password-stdin \
+    <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com
+
 docker build -t imp-automation .
 docker tag imp-automation:latest <REPO_URL>/imp-automation:latest
 docker push <REPO_URL>/imp-automation:latest
