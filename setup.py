@@ -10,7 +10,7 @@ setup(
     description="Chaos engineering on AWS",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/chaosops/chaosimp",
+    url="https://github.com/chaosops-oss/chaosimp",
     author="Vasily Vasinov",
     author_email="vasinov@me.com",
     license="Apache 2.0",
@@ -19,7 +19,7 @@ setup(
         "click>=7",
         "boto3>=1.17",
         "cfn_flip>=1",
-        "troposphere@git+https://github.com/cloudtools/troposphere@master#egg=troposphere-2.7.1imp",
+        "troposphere>=2.7.1",
         "pyhumps>=1"
     ],
     entry_points={
