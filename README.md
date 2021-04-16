@@ -5,7 +5,7 @@
 
 Chaos Imp is a framework for creating, executing, and running [chaos engineering](https://principlesofchaos.org/) (CE) experiments on AWS. It provides shorthand syntax to express experiment templates, executions, and automations. With just a few lines, you can define the experiment you want and model it using YAML and shell scripts. During deployment, Chaos Imp transforms and expands your YAML and shell scripts into AWS CloudFormation syntax, enabling you to run chaos experiments faster.
 
-Chaos Imp uses a plethora of AWS services under the hood. It glues SSM, FIS, Events, and Lambda APIs to create an easy-to-use tool around the following components of the CE process:
+Chaos Imp uses a plethora of AWS services under the hood. It glues Systems Manager Agent (SSM), Failure Injection Simulator (FIS), Events, and Lambda APIs to create an easy-to-use tool around the following components of the CE process:
 
 - Defining infrastructure, application, and security failure injection templates.
 - Running CE experiments in a controlled way by using AWS access capabilities.
@@ -53,7 +53,7 @@ The CLI is self-documenting, so you can learn about any command by running:
 imp <COMMAND_NAME> --help
 ```
 
-## Creating Templates
+## Creating Experiment Templates
 
 Check out [Chaos Imp example templates](https://github.com/chaosops-oss/chaosimp-examples) that include resource, network, and state chaos experiments.
 
@@ -63,7 +63,7 @@ Let's create a simple experiment that stresses CPUs of several EC2 instances.
 
 You can perform experiments on a variety of different AWS resources. Chaos Imp automatically translates resources defined in the YAML experiment template to [AWS FIS targets](https://docs.aws.amazon.com/fis/latest/userguide/targets.html).
 
-For example, to target a subset EC2 instances tagged with `imp: ec2-experiment` define the following target in `imp.yml:
+For example, to target a subset of EC2 instances tagged with `imp: ec2-experiment` define the following target in `imp.yml:
 
 ```yaml
 Targets:
@@ -79,9 +79,57 @@ This defines a FIS target that experiment actions can be applied to.
 
 ### Actions
 
-Now, let's define an action
+Now, let's define a custom Chaos Imp action that runs a script with `stress-ng` stressing CPUs:
 
-## Create Custom Automation Lambda Function
+```yaml
+Actions:
+  - Name: "stress-cpus"
+    Type: "imp:run-script"
+    Target: "ec2-instances"
+    Parameters:
+      Duration: "PT1M"
+    Document:
+      Path: "stress-cpu.sh"
+```
+
+This defines a Chaos Imp action that is later translated into a FIS action. To avoid confusion, you can use all FIS action types defined in the [official documentation](https://docs.aws.amazon.com/fis/latest/userguide/fis-actions-reference.html).
+
+Chaos Imp introduces its own namespace and action type into the mix: `imp:run-script`. This action functions just like `aws:ssm:send-command` except for you can reference a local file instead of `documentArn` and `documentVersion`.
+
+Now, we just add an experiment script file `stress-cpu.sh`:
+
+```shell
+sudo yum -y install stress-ng
+stress-ng --cpu 0 --cpu-method matrixprod --cpu-load 100 -t 20s
+```
+
+This will install `stress-ng` and apply 100% load on all CPUs for 20 seconds.
+
+### Creating a Template
+
+Before creating a template, you have to create a role with a [policy](https://github.com/chaosops-oss/chaosimp-iam-policies/blob/master/ImpFis.json) that allows FIS to run actions.
+
+You can reference this role with every template creation call by using `--role-arn` but it's much more convenient to store it in the local config:
+
+```shell
+imp config set TemplateRoleArn <ROLE_ARN>
+```
+
+We are finally ready to create our first template:
+
+```shell
+imp templates create --path . cpu-stress
+```
+
+### Running Experiments
+
+TBD
+
+### Automating Experiments
+
+TBD
+
+Create custom automation Lambda function:
 
 ```bash
 aws ecr get-login-password | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com
