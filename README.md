@@ -99,6 +99,8 @@ stress-ng --cpu 0 --cpu-method matrixprod --cpu-load 100 -t 20s
 
 This will install `stress-ng` and apply 100% load on all CPUs for 20 seconds.
 
+Running scripts like that on your EC2 instances requires SSM Agent to be installed. It's installed by default on Amazon Linux 2 and Ubuntu machines. If you are using a different Linux distribution then follow the [official installation guide](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-install-ssm-agent.html).
+
 ### Creating a Template
 
 Before creating a template, you have to create a role with a [policy](https://github.com/chaosops-oss/chaosimp-iam-policies/blob/master/ImpFis.json) that allows FIS to run actions.
