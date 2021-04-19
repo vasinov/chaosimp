@@ -1,5 +1,5 @@
 import pathlib
-from setuptools import setup
+from setuptools import setup, find_packages
 
 HERE = pathlib.Path(__file__).parent
 README = (HERE / "README.md").read_text()
@@ -14,6 +14,7 @@ setup(
     author="Vasily Vasinov",
     author_email="vasinov@me.com",
     license="Apache 2.0",
+    packages=find_packages(),
     install_requires=[
         "pyyaml>=5",
         "click>=7",
