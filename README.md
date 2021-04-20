@@ -5,7 +5,7 @@
 
 Chaos Imp is a framework for creating, executing, and running [chaos engineering](https://principlesofchaos.org/) (CE) experiments on AWS. It provides shorthand syntax to express experiment templates, executions, and automations. With just a few lines, you can define the experiment you want and model it using YAML and shell scripts. During deployment, Chaos Imp transforms and expands your YAML and shell scripts into AWS CloudFormation syntax, enabling you to run chaos experiments faster.
 
-Chaos Imp uses a plethora of AWS services under the hood. It glues Systems Manager Agent (SSM), Failure Injection Simulator (FIS), Events, and Lambda APIs to create an easy-to-use tool around the following parts of the CE process:
+Chaos Imp uses a plethora of AWS services under the hood. It glues Systems Manager Agent (SSM), Failure Injection Simulator (FIS), CloudWatch Events, and Lambda Function APIs to create an easy-to-use tool around the following parts of the CE process:
 
 - Defining infrastructure, application, and security failure injection templates.
 - Running CE experiments in a controlled way by using AWS tagging capabilities.
