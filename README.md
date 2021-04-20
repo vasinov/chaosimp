@@ -5,18 +5,16 @@
 
 Chaos Imp is a framework for creating, executing, and running [chaos engineering](https://principlesofchaos.org/) (CE) experiments on AWS. It provides shorthand syntax to express experiment templates, executions, and automations. With just a few lines, you can define the experiment you want and model it using YAML and shell scripts. During deployment, Chaos Imp transforms and expands your YAML and shell scripts into AWS CloudFormation syntax, enabling you to run chaos experiments faster.
 
-Chaos Imp uses a plethora of AWS services under the hood. It glues Systems Manager Agent (SSM), Failure Injection Simulator (FIS), Events, and Lambda APIs to create an easy-to-use tool around the following components of the CE process:
+Chaos Imp uses a plethora of AWS services under the hood. It glues Systems Manager Agent (SSM), Failure Injection Simulator (FIS), Events, and Lambda APIs to create an easy-to-use tool around the following parts of the CE process:
 
 - Defining infrastructure, application, and security failure injection templates.
-- Running CE experiments in a controlled way by using AWS access capabilities.
-- Automating experiments to be run continuously.
+- Running CE experiments in a controlled way by using AWS tagging capabilities.
+- Automating experiments as part of the continuous verification pipeline.
 
-What benefits does Chaos Imp bring to organizations when compared to SSM/FIS/Lambda?
+## Useful Links
 
-- Experiment scripts are decoupled from YAML, which means that they are much more easily editable and can be re-used across multiple experiments.
-- Templates and automations are automatically managed via CloudFormation templates, which makes it easy to control and cleanup.
-- CLI API is very minimalist. It has three namespaces for creating `templates`, running `experiments`, and setting up `automations`. No need to worry about gluing different services together and resolving IAM shenanigans.
-- Chaos Imp uses unified config file syntax. Think of it as [AWS SAM](https://aws.amazon.com/serverless/sam/) for chaos engineering.
+- [Chaos Imp Example Templates](https://github.com/chaosops-oss/chaosimp-examples)
+- [Chaos Imp IAM Policies](https://github.com/chaosops-oss/chaosimp-iam-policies)
 
 ## Installation
 
