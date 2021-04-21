@@ -53,7 +53,7 @@ Let's create a simple experiment that stresses CPUs of several EC2 instances.
 
 You can perform experiments on a variety of different AWS resources. Chaos Imp automatically translates resources defined in the YAML experiment template to [AWS FIS targets](https://docs.aws.amazon.com/fis/latest/userguide/targets.html).
 
-For example, to target a subset of EC2 instances tagged with `imp: ec2-experiment` define the following target in `imp.yml:
+For example, to target a subset of EC2 instances tagged with `imp: ec2-experiment` define the following target in `imp.yml`:
 
 ```yaml
 Targets:
